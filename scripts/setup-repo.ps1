@@ -14,8 +14,8 @@
         vulnerability reporting;
       * GitHub Actions: read-only default token, an allow-list of actions, and approval for workflows
         from outside contributors;
-      * a ruleset protecting `main` (pull requests, required checks, CodeQL gate, signed commits,
-        no force pushes or deletion);
+      * a ruleset protecting a branch, `main` by default (pull requests, required checks, signed
+        commits, no force pushes or deletion, and a CodeQL gate once code scanning has results);
       * a ruleset protecting release tags `v*`;
       * optionally, the initial v1.0.0 release that release-please continues from.
 
@@ -23,18 +23,22 @@
     in Settings -> General -> Social preview.
 
 .PARAMETER Repository
-    owner/name of the repository. Defaults to danielfyo/design-patterns.
+    owner/name of the repository. Asked interactively when omitted (default danielfyo/design-patterns).
+
+.PARAMETER Branch
+    Branch protected by the ruleset. Asked interactively when omitted (default: the default branch).
 
 .PARAMETER CreateInitialRelease
     Also tag the current `main` as v1.0.0 and publish the GitHub release (run after the first merge).
 
 .EXAMPLE
     ./scripts/setup-repo.ps1
-    ./scripts/setup-repo.ps1 -CreateInitialRelease
+    ./scripts/setup-repo.ps1 -Repository danielfyo/design-patterns -Branch main -CreateInitialRelease
 #>
 [CmdletBinding(SupportsShouldProcess)]
 param(
-    [string] $Repository = 'danielfyo/design-patterns',
+    [string] $Repository,
+    [string] $Branch,
     [switch] $CreateInitialRelease
 )
 
@@ -102,16 +106,39 @@ function Set-Ruleset {
 if (-not (Get-Command gh -ErrorAction SilentlyContinue)) {
     throw 'The GitHub CLI (gh) is required: https://cli.github.com/'
 }
-gh auth status | Out-Null
-if ($LASTEXITCODE -ne 0) { throw 'Run "gh auth login" first.' }
+gh auth status *> $null
+if ($LASTEXITCODE -ne 0) {
+    Write-Host 'GitHub CLI is not authenticated. Starting "gh auth login"...'
+    gh auth login --hostname github.com --git-protocol https --web
+    gh auth status *> $null
+    if ($LASTEXITCODE -ne 0) { throw 'GitHub authentication failed.' }
+}
 
-Write-Host "Configuring $Repository" -ForegroundColor Cyan
+while ($Repository -notmatch '^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$') {
+    if ($Repository) { Write-Host "  '$Repository' is not in owner/name format." }
+    $Repository = Read-Host 'Repository (owner/name) [danielfyo/design-patterns]'
+    if (-not $Repository) { $Repository = 'danielfyo/design-patterns' }
+}
+$repoInfo = gh api "repos/$Repository" | ConvertFrom-Json
+if ($LASTEXITCODE -ne 0) { throw "Repository '$Repository' not found or not accessible." }
+if (-not $repoInfo.permissions.admin) { throw "The authenticated account is not an admin of '$Repository'." }
+$DefaultBranch = $repoInfo.default_branch
+if (-not $Branch) {
+    $Branch = Read-Host "Branch to protect [$DefaultBranch]"
+    if (-not $Branch) { $Branch = $DefaultBranch }
+}
+gh api "repos/$Repository/branches/$Branch" *> $null
+if ($LASTEXITCODE -ne 0) { throw "Branch '$Branch' does not exist in '$Repository'." }
+
+Write-Host "Configuring $Repository (protected branch: $Branch)" -ForegroundColor Cyan
 
 Write-Host '1. Repository and merge options'
 Invoke-GitHub PATCH "repos/$Repository" @{
     description                 = 'The 23 GoF design patterns with the same practical example in C#/.NET, TypeScript/React, Python and Go: lessons, runnable code and tests.'
     has_issues                  = $true
     has_wiki                    = $false
+    has_projects                = $false
+    allow_update_branch         = $true
     allow_squash_merge          = $true
     allow_merge_commit          = $true
     allow_rebase_merge          = $false
@@ -149,7 +176,8 @@ Invoke-GitHub PUT "repos/$Repository/actions/permissions/selected-actions" @{
 } | Out-Null
 Invoke-GitHub PUT "repos/$Repository/actions/permissions/workflow" @{
     default_workflow_permissions     = 'read'
-    can_approve_pull_request_reviews = $false
+    # Lets Actions open pull requests, which release-please needs for its release PR.
+    can_approve_pull_request_reviews = $true
 } | Out-Null
 try {
     Invoke-GitHub PUT "repos/$Repository/actions/permissions/fork-pr-contributor-approval" @{
@@ -160,47 +188,58 @@ catch {
     Write-Warning 'Could not set the fork approval policy through the API. Set it in Settings -> Actions -> General -> "Approval for running fork pull request workflows from contributors" -> "Require approval for all external contributors".'
 }
 
-Write-Host '4. Ruleset: protect main'
+Write-Host "4. Ruleset: protect $Branch"
+# The CodeQL gate is only added once the repository has code scanning results; before the first
+# analysis it would block every merge.
+$hasCodeScanning = $false
+$analyses = gh api "repos/$Repository/code-scanning/analyses?per_page=1" 2>$null
+if ($LASTEXITCODE -eq 0 -and $analyses -and @($analyses | ConvertFrom-Json).Count -gt 0) { $hasCodeScanning = $true }
+else { Write-Host '  No code scanning results yet: the CodeQL gate is skipped. Run this script again after CodeQL runs.' }
+
+$branchRef = if ($Branch -eq $DefaultBranch) { '~DEFAULT_BRANCH' } else { "refs/heads/$Branch" }
+$branchRules = @(
+    @{ type = 'deletion' },
+    @{ type = 'non_fast_forward' },
+    @{ type = 'required_signatures' },
+    @{
+        type       = 'pull_request'
+        parameters = @{
+            required_approving_review_count   = 1
+            dismiss_stale_reviews_on_push     = $true
+            require_code_owner_review         = $true
+            require_last_push_approval        = $true
+            required_review_thread_resolution = $true
+            allowed_merge_methods             = @('squash', 'merge')
+        }
+    },
+    @{
+        type       = 'required_status_checks'
+        parameters = @{
+            strict_required_status_checks_policy = $true
+            required_status_checks               = @($RequiredChecks | ForEach-Object { @{ context = $_ } })
+        }
+    }
+)
+if ($hasCodeScanning) {
+    $branchRules += @{
+        type       = 'code_scanning'
+        parameters = @{
+            code_scanning_tools = @(@{
+                    tool                      = 'CodeQL'
+                    security_alerts_threshold = 'high_or_higher'
+                    alerts_threshold          = 'errors'
+                })
+        }
+    }
+}
 Set-Ruleset @{
-    name          = 'Protect main'
+    name          = "Protect $Branch"
     target        = 'branch'
     enforcement   = 'active'
-    conditions    = @{ ref_name = @{ include = @('~DEFAULT_BRANCH'); exclude = @() } }
+    conditions    = @{ ref_name = @{ include = @($branchRef); exclude = @() } }
     # Admins may merge pull requests that are not yet approved (solo maintainer), but cannot push directly.
     bypass_actors = @(@{ actor_id = $AdminRoleId; actor_type = 'RepositoryRole'; bypass_mode = 'pull_request' })
-    rules         = @(
-        @{ type = 'deletion' },
-        @{ type = 'non_fast_forward' },
-        @{ type = 'required_signatures' },
-        @{
-            type       = 'pull_request'
-            parameters = @{
-                required_approving_review_count   = 1
-                dismiss_stale_reviews_on_push     = $true
-                require_code_owner_review         = $true
-                require_last_push_approval        = $true
-                required_review_thread_resolution = $true
-                allowed_merge_methods             = @('squash', 'merge')
-            }
-        },
-        @{
-            type       = 'required_status_checks'
-            parameters = @{
-                strict_required_status_checks_policy = $true
-                required_status_checks               = @($RequiredChecks | ForEach-Object { @{ context = $_ } })
-            }
-        },
-        @{
-            type       = 'code_scanning'
-            parameters = @{
-                code_scanning_tools = @(@{
-                        tool                      = 'CodeQL'
-                        security_alerts_threshold = 'high_or_higher'
-                        alerts_threshold          = 'errors'
-                    })
-            }
-        }
-    )
+    rules         = $branchRules
 }
 
 Write-Host '5. Ruleset: protect release tags'
@@ -214,7 +253,6 @@ Set-Ruleset @{
         @{ actor_id = $AdminRoleId; actor_type = 'RepositoryRole'; bypass_mode = 'always' }
     )
     rules         = @(
-        @{ type = 'creation' },
         @{ type = 'update' },
         @{ type = 'deletion' },
         @{ type = 'non_fast_forward' }
@@ -228,7 +266,7 @@ if ($CreateInitialRelease) {
         Write-Host '  v1.0.0 already exists'
     }
     elseif ($PSCmdlet.ShouldProcess('v1.0.0', 'Create release')) {
-        gh release create v1.0.0 --repo $Repository --target main --title 'v1.0.0' `
+        gh release create v1.0.0 --repo $Repository --target $DefaultBranch --title 'v1.0.0' `
             --notes 'First release: the 23 GoF design patterns in C#, TypeScript/React, Python and Go. See CHANGELOG.md.'
         if ($LASTEXITCODE -ne 0) { throw 'Could not create the v1.0.0 release.' }
     }
