@@ -51,7 +51,10 @@ class RemoteDocumentStore:
 
     def get_document(self, doc_id: str, user: User) -> Document:
         print(f"[remote] fetching {doc_id}")
-        return _DOCUMENTS[doc_id]
+        doc = _DOCUMENTS.get(doc_id)
+        if doc is None:
+            raise LookupError(f"document {doc_id} not found")
+        return doc
 
 
 class DocumentStoreProxy:

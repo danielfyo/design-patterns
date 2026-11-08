@@ -109,3 +109,12 @@ def test_demo_prints_the_expected_output(
 
     expected = Path(__file__).parents[1] / "expected_output.txt"
     assert capsys.readouterr().out == expected.read_text(encoding="utf-8")
+
+
+def test_unknown_document_raises_not_found(
+    example: ModuleType, capsys: pytest.CaptureFixture[str]
+) -> None:
+    store = example.RemoteDocumentStore()
+
+    with pytest.raises(LookupError, match="document doc-404 not found"):
+        store.get_document("doc-404", example.User("ana", "editor"))

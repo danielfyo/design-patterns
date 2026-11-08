@@ -112,4 +112,15 @@ public sealed class ProxyTests
 
         Assert.Equal("confidential", doc.Classification);
     }
+
+    [Fact]
+    public void Unknown_document_throws_not_found()
+    {
+        using var console = new ConsoleCapture();
+        var store = new RemoteDocumentStore();
+
+        var error = Assert.Throws<KeyNotFoundException>(() => store.GetDocument("doc-404", new User("ana", "editor")));
+
+        Assert.Equal("document doc-404 not found", error.Message);
+    }
 }

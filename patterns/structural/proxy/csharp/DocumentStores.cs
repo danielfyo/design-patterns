@@ -34,7 +34,9 @@ public sealed class RemoteDocumentStore : IDocumentStore
     public Document GetDocument(string id, User user)
     {
         Console.WriteLine($"[remote] fetching {id}");
-        return Documents[id];
+        return Documents.TryGetValue(id, out var document)
+            ? document
+            : throw new KeyNotFoundException($"document {id} not found");
     }
 }
 
