@@ -2,48 +2,121 @@ name: CI
 
 on:
   push:
+    branches: [main]
   pull_request:
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  verify:
-    name: Verify all examples (C#, TypeScript, Python, Go)
+  dotnet:
+    name: C# (.NET 8)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-dotnet@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          dotnet-version: "8.0.x"
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-          cache: npm
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - uses: actions/setup-go@v5
-        with:
-          go-version: "1.23"
-
-      - name: Install Node dependencies
-        run: npm ci
-
-      - name: Lint Go
+          persist-credentials: false
+      - uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6.1.0
+        with: { dotnet-version: "8.0.x" }
+      - name: Build (analyzers, code style and warnings as errors)
+        run: dotnet build DesignPatterns.sln --configuration Release
+      - name: Test with coverage
+        run: dotnet test DesignPatterns.sln --configuration Release --no-build --collect:"XPlat Code Coverage" --results-directory coverage
+      - name: Coverage summary
         run: |
-          test -z "$(gofmt -l patterns)" || (gofmt -l patterns && exit 1)
-          go vet ./...
+          dotnet tool install --global dotnet-reportgenerator-globaltool
+          reportgenerator -reports:"coverage/**/coverage.cobertura.xml" -targetdir:coverage/report -reporttypes:MarkdownSummaryGithub
+          { echo "## .NET coverage"; cat coverage/report/SummaryGithub.md; } >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Type-check TypeScript and React demos
-        run: npm run typecheck
+  python:
+    name: Python
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.13"]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with: { python-version: "${{ matrix.python-version }}" }
+      - run: pip install ".[dev]"
+      - name: Lint, type-check (mypy --strict) and test with coverage
+        run: scripts/check-python.sh --cov
+      - name: Coverage summary
+        if: matrix.python-version == '3.13'
+        run: |
+          { echo "## Python coverage"; python -m coverage report --format=markdown; } >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Build the React playground
+  go:
+    name: Go
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with: { go-version-file: go.mod }
+      - name: Format
+        run: test -z "$(gofmt -l .)" || { gofmt -l .; exit 1; }
+      - run: go vet ./...
+      - name: Test with race detector and coverage
+        run: go test -race -coverprofile=coverage.out ./...
+      - name: Coverage summary
+        run: |
+          { echo "## Go coverage"; echo '```'; go tool cover -func=coverage.out | tail -n 1; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+
+  typescript:
+    name: TypeScript + React
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with: { node-version: "22", cache: npm }
+      - run: npm ci
+      - run: npm run typecheck
+      - name: Test with coverage (Vitest + Testing Library)
+        run: npm run coverage
+      - name: Build the playground
         run: npm run build:playground
+      - name: Coverage summary
+        run: |
+          { echo "## TypeScript coverage"; echo '```'; cat coverage/summary.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Build C# examples
-        run: dotnet build DesignPatterns.sln
-
+  examples:
+    name: Same output in every language
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6.1.0
+        with: { dotnet-version: "8.0.x" }
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with: { node-version: "22", cache: npm }
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with: { python-version: "3.13" }
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with: { go-version-file: go.mod }
+      - run: npm ci
       - name: Run every example and compare with expected_output.txt
         run: scripts/verify.sh
+
+  docs:
+    name: Docs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: README output blocks match expected_output.txt
+        run: python3 scripts/sync_readme.py --check
+      - name: Relative links and anchors resolve
+        run: python3 scripts/check_links.py
