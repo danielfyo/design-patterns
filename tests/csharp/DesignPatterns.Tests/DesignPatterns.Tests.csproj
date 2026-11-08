@@ -1,0 +1,54 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <!-- CA1707: underscores in test names are an xUnit convention. CA2007: no ConfigureAwait in tests. -->
+    <NoWarn>$(NoWarn);CA1707;CA2007</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <!-- One reference per pattern: tests live in a folder named after each pattern. -->
+  <ItemGroup>
+    <ProjectReference Include="../../../patterns/behavioral/chain-of-responsibility/csharp/ChainOfResponsibility.csproj" />
+    <ProjectReference Include="../../../patterns/behavioral/command/csharp/Command.csproj" />
+    <ProjectReference Include="../../../patterns/behavioral/interpreter/csharp/Interpreter.csproj" />
+    <ProjectReference Include="../../../patterns/behavioral/iterator/csharp/Iterator.csproj" />
+    <ProjectReference Include="../../../patterns/behavioral/mediator/csharp/Mediator.csproj" />
+    <ProjectReference Include="../../../patterns/behavioral/memento/csharp/Memento.csproj" />
+    <ProjectReference Include="../../../patterns/behavioral/observer/csharp/Observer.csproj" />
+    <ProjectReference Include="../../../patterns/behavioral/state/csharp/State.csproj" />
+    <ProjectReference Include="../../../patterns/behavioral/strategy/csharp/Strategy.csproj" />
+    <ProjectReference Include="../../../patterns/behavioral/template-method/csharp/TemplateMethod.csproj" />
+    <ProjectReference Include="../../../patterns/behavioral/visitor/csharp/Visitor.csproj" />
+    <ProjectReference Include="../../../patterns/creational/abstract-factory/csharp/AbstractFactory.csproj" />
+    <ProjectReference Include="../../../patterns/creational/builder/csharp/Builder.csproj" />
+    <ProjectReference Include="../../../patterns/creational/factory-method/csharp/FactoryMethod.csproj" />
+    <ProjectReference Include="../../../patterns/creational/prototype/csharp/Prototype.csproj" />
+    <ProjectReference Include="../../../patterns/creational/singleton/csharp/Singleton.csproj" />
+    <ProjectReference Include="../../../patterns/structural/adapter/csharp/Adapter.csproj" />
+    <ProjectReference Include="../../../patterns/structural/bridge/csharp/Bridge.csproj" />
+    <ProjectReference Include="../../../patterns/structural/composite/csharp/Composite.csproj" />
+    <ProjectReference Include="../../../patterns/structural/decorator/csharp/Decorator.csproj" />
+    <ProjectReference Include="../../../patterns/structural/facade/csharp/Facade.csproj" />
+    <ProjectReference Include="../../../patterns/structural/flyweight/csharp/Flyweight.csproj" />
+    <ProjectReference Include="../../../patterns/structural/proxy/csharp/Proxy.csproj" />
+  </ItemGroup>
+
+</Project>
