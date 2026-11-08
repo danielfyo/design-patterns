@@ -111,6 +111,8 @@ All four implementations model exactly the same thing and print exactly the same
 | Python 3.10+ | [`python/main.py`](python/main.py) | `python3 patterns/behavioral/iterator/python/main.py` |
 | Go 1.23+ | [`go/main.go`](go/main.go) | `go run ./patterns/behavioral/iterator/go` |
 
+**Tests:** [C# (xUnit)](../../../tests/csharp/DesignPatterns.Tests/Behavioral/IteratorTests.cs) · [TypeScript (Vitest)](typescript/catalog.test.ts) · [React (Testing Library)](typescript/IteratorDemo.test.tsx) · [Python (pytest)](python/test_main.py) · [Go (`go test`)](go/main_test.go)
+
 ### Expected output
 
 <!-- output: expected_output.txt -->

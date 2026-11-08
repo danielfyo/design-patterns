@@ -104,6 +104,8 @@ All four implementations model exactly the same thing and print exactly the same
 | Python 3.10+ | [`python/main.py`](python/main.py) | `python3 patterns/behavioral/memento/python/main.py` |
 | Go 1.23+ | [`go/main.go`](go/main.go) | `go run ./patterns/behavioral/memento/go` |
 
+**Tests:** [C# (xUnit)](../../../tests/csharp/DesignPatterns.Tests/Behavioral/MementoTests.cs) · [TypeScript (Vitest)](typescript/editor.test.ts) · [React (Testing Library)](typescript/MementoDemo.test.tsx) · [Python (pytest)](python/test_main.py) · [Go (`go test`)](go/main_test.go)
+
 ### Expected output
 
 <!-- output: expected_output.txt -->

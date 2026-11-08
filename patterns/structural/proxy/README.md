@@ -110,6 +110,8 @@ Four requests result in **one** connection and **two** remote fetches.
 | Python 3.10+ | [`python/main.py`](python/main.py) | `python3 patterns/structural/proxy/python/main.py` |
 | Go 1.23+ | [`go/main.go`](go/main.go) | `go run ./patterns/structural/proxy/go` |
 
+**Tests:** [C# (xUnit)](../../../tests/csharp/DesignPatterns.Tests/Structural/ProxyTests.cs) · [TypeScript (Vitest)](typescript/documents.test.ts) · [React (Testing Library)](typescript/ProxyDemo.test.tsx) · [Python (pytest)](python/test_main.py) · [Go (`go test`)](go/main_test.go)
+
 ### Expected output
 
 <!-- output: expected_output.txt -->

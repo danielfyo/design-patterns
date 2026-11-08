@@ -113,6 +113,8 @@ The client runs two orders: `#1001` follows the happy path (and tries to cancel 
 | Python 3.10+ | [`python/main.py`](python/main.py) | `python3 patterns/behavioral/state/python/main.py` |
 | Go 1.23+ | [`go/main.go`](go/main.go) | `go run ./patterns/behavioral/state/go` |
 
+**Tests:** [C# (xUnit)](../../../tests/csharp/DesignPatterns.Tests/Behavioral/StateTests.cs) · [TypeScript (Vitest)](typescript/order.test.ts) · [React (Testing Library)](typescript/StateDemo.test.tsx) · [Python (pytest)](python/test_main.py) · [Go (`go test`)](go/main_test.go)
+
 ### Expected output
 
 <!-- output: expected_output.txt -->

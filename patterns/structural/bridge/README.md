@@ -109,6 +109,8 @@ All four implementations model exactly the same thing and print exactly the same
 | Python 3.10+ | [`python/main.py`](python/main.py) | `python3 patterns/structural/bridge/python/main.py` |
 | Go 1.23+ | [`go/`](go/) | `go run ./patterns/structural/bridge/go` |
 
+**Tests:** [C# (xUnit)](../../../tests/csharp/DesignPatterns.Tests/Structural/BridgeTests.cs) · [TypeScript (Vitest)](typescript/reports.test.ts) · [React (Testing Library)](typescript/BridgeDemo.test.tsx) · [Python (pytest)](python/test_main.py) · [Go (`go test`)](go/main_test.go)
+
 ### Expected output
 
 <!-- output: expected_output.txt -->

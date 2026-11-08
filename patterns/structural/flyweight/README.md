@@ -100,6 +100,8 @@ Finally a few markers are drawn, and the client checks that markers #0 and #3 po
 | Python 3.10+ | [`python/main.py`](python/main.py) | `python3 patterns/structural/flyweight/python/main.py` |
 | Go 1.23+ | [`go/main.go`](go/main.go) | `go run ./patterns/structural/flyweight/go` |
 
+**Tests:** [C# (xUnit)](../../../tests/csharp/DesignPatterns.Tests/Structural/FlyweightTests.cs) · [TypeScript (Vitest)](typescript/markers.test.ts) · [React (Testing Library)](typescript/FlyweightDemo.test.tsx) · [Python (pytest)](python/test_main.py) · [Go (`go test`)](go/main_test.go)
+
 ### Expected output
 
 <!-- output: expected_output.txt -->

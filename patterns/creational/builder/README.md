@@ -105,6 +105,8 @@ All four implementations model exactly the same thing and print exactly the same
 | Python 3.10+ | [`python/main.py`](python/main.py) | `python3 patterns/creational/builder/python/main.py` |
 | Go 1.23+ | [`go/main.go`](go/main.go) | `go run ./patterns/creational/builder/go` |
 
+**Tests:** [C# (xUnit)](../../../tests/csharp/DesignPatterns.Tests/Creational/BuilderTests.cs) · [TypeScript (Vitest)](typescript/httpRequest.test.ts) · [React (Testing Library)](typescript/BuilderDemo.test.tsx) · [Python (pytest)](python/test_main.py) · [Go (`go test`)](go/main_test.go)
+
 ### Expected output
 
 <!-- output: expected_output.txt -->

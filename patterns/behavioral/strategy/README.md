@@ -98,6 +98,8 @@ The client prices two orders ($80 and $150, both 4 kg) with each strategy, reusi
 | Python 3.10+ | [`python/main.py`](python/main.py) | `python3 patterns/behavioral/strategy/python/main.py` |
 | Go 1.23+ | [`go/main.go`](go/main.go) | `go run ./patterns/behavioral/strategy/go` |
 
+**Tests:** [C# (xUnit)](../../../tests/csharp/DesignPatterns.Tests/Behavioral/StrategyTests.cs) · [TypeScript (Vitest)](typescript/shipping.test.ts) · [React (Testing Library)](typescript/StrategyDemo.test.tsx) · [Python (pytest)](python/test_main.py) · [Go (`go test`)](go/main_test.go)
+
 ### Expected output
 
 <!-- output: expected_output.txt -->

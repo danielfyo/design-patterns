@@ -127,6 +127,8 @@ The client finally combines the three totals into a grand total.
 | Python 3.10+ | [`python/main.py`](python/main.py) | `python3 patterns/behavioral/visitor/python/main.py` |
 | Go 1.23+ | [`go/main.go`](go/main.go), [`go/cart.go`](go/cart.go) | `go run ./patterns/behavioral/visitor/go` |
 
+**Tests:** [C# (xUnit)](../../../tests/csharp/DesignPatterns.Tests/Behavioral/VisitorTests.cs) · [TypeScript (Vitest)](typescript/cart.test.ts) · [React (Testing Library)](typescript/VisitorDemo.test.tsx) · [Python (pytest)](python/test_main.py) · [Go (`go test`)](go/main_test.go)
+
 ### Expected output
 
 <!-- output: expected_output.txt -->

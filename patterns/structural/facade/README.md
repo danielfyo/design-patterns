@@ -102,6 +102,8 @@ The final stock line proves the rollback: the monitor count is back to 5.
 | Python 3.10+ | [`python/main.py`](python/main.py) | `python3 patterns/structural/facade/python/main.py` |
 | Go 1.23+ | [`go/`](go/) | `go run ./patterns/structural/facade/go` |
 
+**Tests:** [C# (xUnit)](../../../tests/csharp/DesignPatterns.Tests/Structural/FacadeTests.cs) · [TypeScript (Vitest)](typescript/shop.test.ts) · [React (Testing Library)](typescript/FacadeDemo.test.tsx) · [Python (pytest)](python/test_main.py) · [Go (`go test`)](go/main_test.go)
+
 ### Expected output
 
 <!-- output: expected_output.txt -->

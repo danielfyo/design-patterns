@@ -124,6 +124,8 @@ and that the macro is undone with a single undo. Each line shows the document af
 | Python 3.10+ | [`python/main.py`](python/main.py) | `python3 patterns/behavioral/command/python/main.py` |
 | Go 1.23+ | [`go/main.go`](go/main.go) | `go run ./patterns/behavioral/command/go` |
 
+**Tests:** [C# (xUnit)](../../../tests/csharp/DesignPatterns.Tests/Behavioral/CommandTests.cs) · [TypeScript (Vitest)](typescript/editor.test.ts) · [React (Testing Library)](typescript/CommandDemo.test.tsx) · [Python (pytest)](python/test_main.py) · [Go (`go test`)](go/main_test.go)
+
 ### Expected output
 
 <!-- output: expected_output.txt -->

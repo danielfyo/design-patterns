@@ -118,6 +118,8 @@ All four implementations model exactly the same thing and print exactly the same
 | Python 3.10+ | [`python/main.py`](python/main.py) | `python3 patterns/structural/adapter/python/main.py` |
 | Go 1.23+ | [`go/main.go`](go/main.go) | `go run ./patterns/structural/adapter/go` |
 
+**Tests:** [C# (xUnit)](../../../tests/csharp/DesignPatterns.Tests/Structural/AdapterTests.cs) · [TypeScript (Vitest)](typescript/payments.test.ts) · [React (Testing Library)](typescript/AdapterDemo.test.tsx) · [Python (pytest)](python/test_main.py) · [Go (`go test`)](go/main_test.go)
+
 ### Expected output
 
 <!-- output: expected_output.txt -->

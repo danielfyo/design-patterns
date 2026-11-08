@@ -15,6 +15,7 @@ so readers always know where to look. Copy the skeleton below when adding or rew
 - **Expected output:** never written by hand. Keep the markers and run
   `python3 scripts/sync_readme.py`.
 - **Real-world usages:** only well-known, verifiable APIs from .NET, JavaScript/React, Python and Go.
+- **Tests:** link every test file right below the *Implementations* table.
 - **Links:** relative links to sibling lessons (`../state/README.md`), checked by
   `python3 scripts/check_links.py`.
 - **Language:** English, second person, short paragraphs, practical before theoretical.
@@ -65,6 +66,8 @@ classDiagram
 | React (TSX) | [`typescript/<Pattern>Demo.tsx`](typescript/<Pattern>Demo.tsx) | `npm run dev` → open the playground |
 | Python 3.10+ | [`python/main.py`](python/main.py) | `python3 patterns/<category>/<pattern>/python/main.py` |
 | Go 1.23+ | [`go/main.go`](go/main.go) | `go run ./patterns/<category>/<pattern>/go` |
+
+**Tests:** [C# (xUnit)](../../../tests/csharp/DesignPatterns.Tests/<Category>/<Pattern>Tests.cs) · [TypeScript (Vitest)](typescript/<core>.test.ts) · [React (Testing Library)](typescript/<Pattern>Demo.test.tsx) · [Python (pytest)](python/test_main.py) · [Go (`go test`)](go/main_test.go)
 
 ### Expected output
 

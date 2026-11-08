@@ -132,6 +132,8 @@ All four implementations print exactly the same output:
 | Python 3.10+ | [`python/main.py`](python/main.py) | `python3 patterns/behavioral/interpreter/python/main.py` |
 | Go 1.23+ | [`go/`](go/) (`expressions.go`, `parser.go`, `main.go`) | `go run ./patterns/behavioral/interpreter/go` |
 
+**Tests:** [C# (xUnit)](../../../tests/csharp/DesignPatterns.Tests/Behavioral/InterpreterTests.cs) · TypeScript (Vitest): [`expressions.test.ts`](typescript/expressions.test.ts), [`parser.test.ts`](typescript/parser.test.ts) · [React (Testing Library)](typescript/InterpreterDemo.test.tsx) · [Python (pytest)](python/test_main.py) · [Go (`go test`)](go/main_test.go)
+
 ### Expected output
 
 <!-- output: expected_output.txt -->
