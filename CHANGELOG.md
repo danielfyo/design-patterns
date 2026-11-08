@@ -6,6 +6,18 @@ All notable changes to this project are documented in this file. It is generated
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and versions follow
 [Semantic Versioning](https://semver.org/).
 
+## [1.0.1](https://github.com/danielfyo/design-patterns/compare/v1.0.0...v1.0.1) (2026-11-08)
+
+
+### Bug Fixes
+
+* **csharp:** add braces required by IDE0011 on newer .NET SDKs ([2afac7c](https://github.com/danielfyo/design-patterns/commit/2afac7cc64097b6e00841b4451df03cd45c8ecf7))
+
+
+### Build System
+
+* **deps-dev:** bump the python group with 5 updates ([#2](https://github.com/danielfyo/design-patterns/issues/2)) ([a7dda5e](https://github.com/danielfyo/design-patterns/commit/a7dda5e1f0e45fb3cc49add28aff7fd921655df0))
+
 ## 1.0.0
 
 ### Features
