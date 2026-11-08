@@ -1,5 +1,9 @@
 # Tooling for the Python examples (patterns/**/python). The examples themselves use only the
 # standard library; these dependencies are for linting, type checking and testing.
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "design-patterns"
 version = "1.0.0"
@@ -9,6 +13,11 @@ license = { text = "MIT" }
 
 [project.optional-dependencies]
 dev = ["pytest>=8", "pytest-cov>=5", "mypy>=1.10", "ruff>=0.5"]
+
+# Nothing is packaged: installing the project only pulls in the dev tooling.
+[tool.setuptools]
+packages = []
+py-modules = []
 
 [tool.pytest.ini_options]
 testpaths = ["patterns"]
