@@ -1,11 +1,23 @@
+<a id="top"></a>
+
+<p align="center">
+  <img src=".github/assets/social-preview.png" alt="Design Patterns: all 23 GoF patterns with one practical example in C#, TypeScript, React, Python and Go" width="100%">
+</p>
+
 # Design Patterns — One Example, Four Languages
 
 [![CI](https://github.com/danielfyo/design-patterns/actions/workflows/ci.yml/badge.svg)](https://github.com/danielfyo/design-patterns/actions/workflows/ci.yml)
-![C#](https://img.shields.io/badge/C%23-.NET%208-512BD4)
-![TypeScript](https://img.shields.io/badge/TypeScript-React%2019-3178C6)
-![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB)
-![Go](https://img.shields.io/badge/Go-1.23%2B-00ADD8)
-![License: MIT](https://img.shields.io/badge/License-MIT-green)
+[![CodeQL](https://github.com/danielfyo/design-patterns/actions/workflows/codeql.yml/badge.svg)](https://github.com/danielfyo/design-patterns/actions/workflows/codeql.yml)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/danielfyo/design-patterns/badge)](https://scorecard.dev/viewer/?uri=github.com/danielfyo/design-patterns)
+[![Latest release](https://img.shields.io/github/v/release/danielfyo/design-patterns?sort=semver)](https://github.com/danielfyo/design-patterns/releases)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-fe5196.svg?logo=conventionalcommits&logoColor=white)](https://www.conventionalcommits.org/en/v1.0.0/)
+
+![.NET 8](https://img.shields.io/badge/.NET-8-512BD4?logo=dotnet&logoColor=white)
+![TypeScript 7](https://img.shields.io/badge/TypeScript-7-3178C6?logo=typescript&logoColor=white)
+![React 19](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)
+![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)
+![Go 1.23+](https://img.shields.io/badge/Go-1.23%2B-00ADD8?logo=go&logoColor=white)
 
 An open-source, hands-on course on **all 23 classic design patterns** from the
 "Gang of Four" (GoF) book — every **creational**, **structural** and **behavioral** pattern —
@@ -18,6 +30,8 @@ What makes this repository different:
   scenario and the *same* class names, so you can compare the languages side by side.
 - ✅ **Verified to behave identically.** Each implementation prints exactly the same output,
   checked in CI against the pattern's `expected_output.txt`.
+- 🧪 **Tested in every language.** Unit tests prove each pattern's guarantees with xUnit, pytest,
+  `go test` and Vitest + Testing Library, under strict linters and type checkers.
 - 📚 **A full lesson per pattern.** The problem it solves, the solution, a UML diagram, a code
   walkthrough, idioms per language, **when to use it, when *not* to use it**, pros and cons,
   where it appears in real frameworks, related patterns and exercises.
@@ -45,6 +59,7 @@ What makes this repository different:
 - [Further reading](#further-reading)
 - [Contributing](#contributing)
 - [License](#license)
+- [About the author](#about-the-author)
 
 ---
 
@@ -86,19 +101,20 @@ Why learn them?
 
 ### Prerequisites
 
-| Language | Version | Check |
-|---|---|---|
-| C# | [.NET SDK 8](https://dotnet.microsoft.com/download) or later | `dotnet --version` |
-| TypeScript / React | [Node.js 20+](https://nodejs.org/) (then `npm install`) | `node --version` |
-| Python | 3.10 or later, standard library only | `python3 --version` |
-| Go | 1.23 or later | `go version` |
+| Language | Version | Check | Tests |
+|---|---|---|---|
+| 🟣 C# | [.NET SDK 8](https://dotnet.microsoft.com/download) or later | `dotnet --version` | xUnit |
+| 🔷 TypeScript / ⚛️ React | [Node.js 20+](https://nodejs.org/) (then `npm ci`) | `node --version` | Vitest + Testing Library |
+| 🐍 Python | 3.10 or later, standard library only | `python3 --version` | pytest + mypy `--strict` + ruff |
+| 🐹 Go | 1.23 or later | `go version` | `go test` |
 
 You only need the languages you want to study.
 
 ```bash
 git clone https://github.com/danielfyo/design-patterns.git
 cd design-patterns
-npm install          # only needed for TypeScript / React
+npm ci                     # only needed for TypeScript / React
+pip install -e ".[dev]"    # only needed to lint and test the Python examples
 ```
 
 ### Run one pattern
@@ -120,6 +136,15 @@ npm run dev          # then open the URL Vite prints (http://localhost:5173 by d
 
 The playground discovers every `*Demo.tsx` component automatically and lists them by family.
 
+### Run the tests
+
+```bash
+dotnet test DesignPatterns.sln            # C#: xUnit (the build enforces analyzers and code style)
+npm test                                  # TypeScript + React: Vitest and Testing Library
+scripts/check-python.sh                   # Python: ruff, mypy --strict and pytest
+go test ./...                             # Go
+```
+
 ### Verify everything
 
 ```bash
@@ -127,7 +152,8 @@ scripts/verify.sh                         # runs all 23 patterns × 4 languages 
 scripts/verify.sh structural/decorator    # a single pattern
 LANGS="python go" scripts/verify.sh       # a subset of languages
 npm run typecheck                         # type-check all TypeScript and React code
-dotnet build DesignPatterns.sln           # build all C# projects
+python3 scripts/sync_readme.py --check    # lesson output blocks match expected_output.txt
+python3 scripts/check_links.py            # every relative link and anchor resolves
 ```
 
 ---
@@ -144,15 +170,26 @@ dotnet build DesignPatterns.sln           # build all C# projects
 │       ├── README.md             ← the full lesson
 │       ├── expected_output.txt   ← output all four implementations must print
 │       ├── csharp/               ← <Pattern>.csproj, Program.cs, ...
-│       ├── typescript/           ← pattern core (.ts), main.ts (console), <Pattern>Demo.tsx (React)
-│       ├── python/main.py
-│       └── go/main.go
+│       ├── typescript/           ← core (.ts), main.ts, <Pattern>Demo.tsx (React) + *.test.ts(x)
+│       ├── python/               ← main.py + test_main.py
+│       └── go/                   ← main.go + main_test.go
+├── tests/csharp/                 ← xUnit project with one test class per pattern
 ├── playground/                   ← Vite + React app that renders every *Demo.tsx
-├── scripts/verify.sh             ← runs and diffs every example
+├── docs/PATTERN_TEMPLATE.md      ← the structure every lesson follows
+├── scripts/
+│   ├── verify.sh                 ← runs and diffs every example in every language
+│   ├── check-python.sh           ← ruff + mypy --strict + pytest
+│   ├── sync_readme.py            ← regenerates the output blocks of the lessons
+│   ├── check_links.py            ← validates relative links and anchors
+│   └── setup-repo.ps1            ← applies the GitHub settings (rulesets, security, Actions)
+├── .github/                      ← CI, CodeQL, Scorecard, releases, Dependabot, templates
 ├── DesignPatterns.sln            ← all C# projects in one solution
-├── Directory.Build.props         ← shared C# settings (net8.0, nullable, warnings as errors)
-├── package.json / tsconfig.json  ← TypeScript + React tooling
-└── go.mod                        ← one Go module; each pattern is a `package main`
+├── Directory.Build.props         ← shared C# settings (analyzers, code style, warnings as errors)
+├── Directory.Packages.props      ← central NuGet package versions
+├── package.json / tsconfig.json  ← TypeScript, React and Vitest tooling
+├── pyproject.toml / conftest.py  ← ruff, mypy, pytest and coverage settings
+├── go.mod                        ← one Go module; each pattern is a `package main`
+└── .editorconfig / .gitattributes← formatting and line endings for every editor and OS
 ```
 
 ---
@@ -619,9 +656,43 @@ exercises.
 ## Contributing
 
 Contributions are very welcome — fixes, clearer explanations, new exercises or new languages.
-Please read [CONTRIBUTING.md](CONTRIBUTING.md). In short: keep the same example in every
-language, keep the output identical, and run `scripts/verify.sh` before opening a pull request.
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) first: every example must stay equivalent across the
+four languages and print the same output, commits follow
+[Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/), and CI must be green.
+Security issues: see [SECURITY.md](SECURITY.md). Everyone taking part follows the
+[Code of Conduct](CODE_OF_CONDUCT.md).
+
+### How this repository is run
+
+The repository applies the engineering practices it teaches:
+
+| Practice | How |
+| --- | --- |
+| **Quality gates** | CI builds and tests four toolchains with strict settings: .NET analyzers and code style with warnings as errors, ruff + mypy `--strict`, `gofmt` + `go vet` + the race detector, strict TypeScript. Coverage is published on every pull request. |
+| **Behavioural equivalence** | Every example runs in all four languages and must print its `expected_output.txt` byte for byte. |
+| **Protected `main`** | Every change — including the maintainer's — goes through a pull request with green CI, a CodeQL gate, code-owner review and signed commits. Force pushes and deletion are blocked. |
+| **Open to contributions** | Anyone can fork and open a pull request. Workflows from outside contributors run only after a maintainer approves them. |
+| **Supply-chain security** | Actions pinned to commit SHAs, least-privilege tokens, no persisted credentials, an allow-list of actions, protected release tags and an [OpenSSF Scorecard](https://scorecard.dev/viewer/?uri=github.com/danielfyo/design-patterns). |
+| **Security scanning** | CodeQL for C#, Python, Go, TypeScript and workflows; Dependabot alerts and updates; secret scanning with push protection; private vulnerability reporting. |
+| **Traceable history** | Conventional Commits, enforced on pull request titles; signed, verified commits. |
+| **Automated releases** | release-please derives the next version and the [CHANGELOG](CHANGELOG.md) from the commit history. |
+| **Docs as code** | The lessons' output blocks are generated from the tested files, and every relative link is checked in CI. |
+| **Consistent formatting** | `.editorconfig` and `.gitattributes` keep indentation, encodings and line endings identical on every editor and OS. |
+
+<a id="license"></a>
 
 ## License
 
-[MIT](LICENSE) — free to use for learning, teaching, workshops and courses.
+Released under the [MIT License](LICENSE) — free to use for learning, teaching, workshops and courses.
+
+<a id="author"></a>
+
+## About the author
+
+Created and maintained by **Daniel F Yepes O** ([@danielfyo](https://github.com/danielfyo)).
+
+If this course helped you, consider giving it a ⭐ and sharing it with your team.
+
+---
+
+<p align="center"><a href="#top">⬆ Back to top</a></p>
