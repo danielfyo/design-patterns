@@ -19,7 +19,7 @@ Console.WriteLine("Picking the factory from a preference string:");
 foreach (var preference in new[] { "dark", "light" })
 {
     IThemeFactory factory = preference == "dark" ? new DarkTheme() : new LightTheme();
-    Console.WriteLine($"  preference={preference,-5} -> {factory.Name} -> {factory.CreateButton("OK").Render()}");
+    Console.WriteLine($"  preference={preference,-5} -> {factory.Name,-10} -> {factory.CreateCheckbox("Sync", true).Name}");
 }
 
 Console.WriteLine("Mixing families by hand (bypassing the factory):");

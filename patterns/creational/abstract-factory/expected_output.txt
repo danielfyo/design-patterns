@@ -8,7 +8,7 @@ Settings screen with DarkTheme:
   [ ] Weekly digest   (dark checkbox: tick #60a5fa)
   [ Save ]            (dark button: bg #1f2937, text #f9fafb)
 Picking the factory from a preference string:
-  preference=dark  -> DarkTheme -> [ OK ]              (dark button: bg #1f2937, text #f9fafb)
-  preference=light -> LightTheme -> [ OK ]              (light button: bg #ffffff, text #111827)
+  preference=dark  -> DarkTheme  -> DarkCheckbox
+  preference=light -> LightTheme -> LightCheckbox
 Mixing families by hand (bypassing the factory):
   error: cannot mix themes: LightButton is light, DarkCheckbox is dark
