@@ -17,3 +17,4 @@
 
 # GitHub Linguist: hide generated files from diffs and language stats.
 package-lock.json linguist-generated=true
+packages.lock.json linguist-generated=true
