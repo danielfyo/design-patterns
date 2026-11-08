@@ -36,10 +36,19 @@ func (m *member) Name() string { return m.name }
 
 func (m *member) join(med ChatMediator) { m.mediator = med }
 
-func (m *member) Send(message string) { m.mediator.Send(message, m.self) }
+// room returns the participant's mediator. Using a participant that never joined a room is a
+// programming error, so it panics with a clear message (the other languages raise an exception).
+func (m *member) room() ChatMediator {
+	if m.mediator == nil {
+		panic(fmt.Sprintf("%s has not joined a room.", m.name))
+	}
+	return m.mediator
+}
+
+func (m *member) Send(message string) { m.room().Send(message, m.self) }
 
 func (m *member) SendTo(recipient, message string) {
-	m.mediator.SendDirect(message, m.self, recipient)
+	m.room().SendDirect(message, m.self, recipient)
 }
 
 // User is a Concrete Colleague: a human user who prints what they receive.

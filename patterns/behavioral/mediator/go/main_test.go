@@ -173,3 +173,13 @@ func captureStdout(t *testing.T, fn func()) string {
 	}
 	return buf.String()
 }
+
+func TestSendingBeforeJoiningARoomPanicsWithAClearMessage(t *testing.T) {
+	defer func() {
+		if got := recover(); got != "Alice has not joined a room." {
+			t.Errorf("recover() = %v", got)
+		}
+	}()
+
+	NewUser("Alice").Send("hello?")
+}
