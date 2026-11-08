@@ -152,11 +152,19 @@ def tokenize(source: str) -> list[Token]:
             continue
         start = i
         if c.isascii() and (c.isdigit() or c == "."):
-            while i < len(source) and source[i].isascii() and (source[i].isdigit() or source[i] == "."):
+            while (
+                i < len(source)
+                and source[i].isascii()
+                and (source[i].isdigit() or source[i] == ".")
+            ):
                 i += 1
             tokens.append(Token("number", source[start:i], start))
         elif c.isascii() and (c.isalpha() or c == "_"):
-            while i < len(source) and source[i].isascii() and (source[i].isalnum() or source[i] == "_"):
+            while (
+                i < len(source)
+                and source[i].isascii()
+                and (source[i].isalnum() or source[i] == "_")
+            ):
                 i += 1
             tokens.append(Token("identifier", source[start:i], start))
         elif c in "+-*/()":
@@ -243,8 +251,12 @@ def main() -> None:
     print("=== Interpreter Pattern: Pricing rule expression language ===")
 
     contexts = {
-        "regular": Context({"price": 20, "quantity": 3, "discount": 5, "shipping": 6, "taxRate": 0.21}),
-        "bulk": Context({"price": 12.5, "quantity": 10, "discount": 15, "shipping": 8, "taxRate": 0.1}),
+        "regular": Context(
+            {"price": 20, "quantity": 3, "discount": 5, "shipping": 6, "taxRate": 0.21}
+        ),
+        "bulk": Context(
+            {"price": 12.5, "quantity": 10, "discount": 15, "shipping": 8, "taxRate": 0.1}
+        ),
     }
 
     for name, context in contexts.items():

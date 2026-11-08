@@ -94,12 +94,17 @@ func (e Multiply) String() string { return e.format("*") }
 type Divide struct{ binary }
 
 func (e Divide) Interpret(ctx Context) (float64, error) {
-	l, r, err := e.operands(ctx)
+	// The divisor is checked first, like in the other languages of the repo.
+	r, err := e.Right.Interpret(ctx)
 	if err != nil {
 		return 0, err
 	}
 	if r == 0 {
 		return 0, errors.New("division by zero")
+	}
+	l, err := e.Left.Interpret(ctx)
+	if err != nil {
+		return 0, err
 	}
 	return l / r, nil
 }

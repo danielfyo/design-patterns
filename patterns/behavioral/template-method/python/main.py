@@ -83,7 +83,9 @@ class DataImporter(ABC):
 
     def on_complete(self, s: ImportSummary) -> None:
         """Hook: called at the end with the summary; subclasses may extend it."""
-        print(f"[complete] {s.read} read, {s.dropped} dropped, {s.saved} saved, total ${s.total:.2f}")
+        print(
+            f"[complete] {s.read} read, {s.dropped} dropped, {s.saved} saved, total ${s.total:.2f}"
+        )
 
 
 class CsvImporter(DataImporter):

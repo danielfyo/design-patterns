@@ -116,10 +116,16 @@ class ShippingCostCalculator:
         self._add(book, "flat rate", Decimal("1.50"))
 
     def visit_electronics(self, electronics: Electronics) -> None:
-        self._add(electronics, "$4.00 + $1.20/kg", Decimal("4.00") + Decimal("1.20") * electronics.weight_kg)
+        self._add(
+            electronics,
+            "$4.00 + $1.20/kg",
+            Decimal("4.00") + Decimal("1.20") * electronics.weight_kg,
+        )
 
     def visit_food(self, food: Food) -> None:
-        self._add(food, "$2.50/kg, min $3.00", max(Decimal("3.00"), Decimal("2.50") * food.weight_kg))
+        self._add(
+            food, "$2.50/kg, min $3.00", max(Decimal("3.00"), Decimal("2.50") * food.weight_kg)
+        )
 
     def _add(self, item: CartItem, rule: str, cost: Decimal) -> None:
         cost = round2(cost)

@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 // Product is one product row, whatever the source format.
 type Product struct {
@@ -78,7 +81,7 @@ func DefaultValidate(records []Product) []Product {
 	var valid []Product
 	for _, r := range records {
 		switch {
-		case r.Name == "":
+		case strings.TrimSpace(r.Name) == "":
 			fmt.Printf("[validate] dropped %s: empty name\n", r.SKU)
 		case r.Price < 0:
 			fmt.Printf("[validate] dropped %s: negative price %.2f\n", r.SKU, r.Price)

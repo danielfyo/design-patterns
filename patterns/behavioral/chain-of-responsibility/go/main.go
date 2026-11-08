@@ -34,7 +34,11 @@ var reasons = map[int]string{
 }
 
 func (r Response) String() string {
-	return fmt.Sprintf("%d %s - %s", r.Status, reasons[r.Status], r.Message)
+	reason, ok := reasons[r.Status]
+	if !ok {
+		reason = "Unknown"
+	}
+	return fmt.Sprintf("%d %s - %s", r.Status, reason, r.Message)
 }
 
 // Handler is the common interface of every link in the chain. SetNext returns
