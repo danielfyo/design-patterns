@@ -22,8 +22,10 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6.1.0
         with: { dotnet-version: "8.0.x" }
+      - name: Restore from lock files
+        run: dotnet restore DesignPatterns.sln --locked-mode
       - name: Build (analyzers, code style and warnings as errors)
-        run: dotnet build DesignPatterns.sln --configuration Release
+        run: dotnet build DesignPatterns.sln --no-restore --configuration Release
       - name: Test with coverage
         run: dotnet test DesignPatterns.sln --configuration Release --no-build --collect:"XPlat Code Coverage" --results-directory coverage
       - name: Coverage summary
@@ -44,10 +46,10 @@ jobs:
         with:
           persist-credentials: false
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
-        with: { python-version: "${{ matrix.python-version }}" }
+        with: { python-version: "${{ matrix.python-version }}", cache: pip, cache-dependency-path: pyproject.toml }
       - run: pip install ".[dev]"
       - name: Lint, type-check (mypy --strict) and test with coverage
-        run: scripts/check-python.sh --cov
+        run: bash scripts/check-python.sh --cov
       - name: Coverage summary
         if: matrix.python-version == '3.13'
         run: |
@@ -81,6 +83,8 @@ jobs:
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with: { node-version: "22", cache: npm }
       - run: npm ci
+      - name: Audit dependencies
+        run: npm audit --audit-level=moderate
       - run: npm run typecheck
       - name: Test with coverage (Vitest + Testing Library)
         run: npm run coverage
@@ -107,7 +111,7 @@ jobs:
         with: { go-version-file: go.mod }
       - run: npm ci
       - name: Run every example and compare with expected_output.txt
-        run: scripts/verify.sh
+        run: bash scripts/verify.sh
 
   docs:
     name: Docs
