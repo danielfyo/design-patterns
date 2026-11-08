@@ -29,7 +29,10 @@ class FileSystemNode(ABC):
 
     @abstractmethod
     def print(self, indent: int = 0) -> None:
-        """Print this node (and its subtree). Inside methods, ``print(...)`` is still the builtin."""
+        """Print this node (and its subtree).
+
+        Inside methods, ``print(...)`` is still the builtin.
+        """
 
 
 class File(FileSystemNode):
@@ -96,7 +99,9 @@ def main() -> None:
         Directory("components").add(File("Header.tsx", 1500), File("Footer.tsx", 900)),
     )
     assets = Directory("assets").add(File("logo.png", 5120), File("styles.css", 640))
-    project = Directory("project").add(File("README.md", 1200), File("package.json", 800), src, assets)
+    project = Directory("project").add(
+        File("README.md", 1200), File("package.json", 800), src, assets
+    )
 
     # One call prints the whole tree: each directory delegates to its children.
     project.print()

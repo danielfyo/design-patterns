@@ -139,7 +139,11 @@ def main() -> None:
     reports: list[Report] = [
         SalesReport(
             renderers[0],
-            [("North", Decimal("12500.00")), ("South", Decimal("8300.50")), ("West", Decimal("10199.50"))],
+            [
+                ("North", Decimal("12500.00")),
+                ("South", Decimal("8300.50")),
+                ("West", Decimal("10199.50")),
+            ],
         ),
         InventoryReport(renderers[0], [("Keyboards", 42), ("Monitors", 7)]),
     ]

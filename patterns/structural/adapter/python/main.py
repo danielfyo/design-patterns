@@ -7,7 +7,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from decimal import ROUND_HALF_UP, Decimal
-from typing import Protocol
+from typing import ClassVar, Protocol
 
 
 @dataclass(frozen=True)
@@ -43,7 +43,10 @@ class InternalWalletProcessor:
             return PaymentResult(False, None, "Insufficient wallet balance")
         before = self._balance
         self._balance -= amount
-        print(f"    [wallet] debit {amount:.2f} {currency} (balance {before:.2f} -> {self._balance:.2f})")
+        print(
+            f"    [wallet] debit {amount:.2f} {currency} "
+            f"(balance {before:.2f} -> {self._balance:.2f})"
+        )
         transaction_id = f"WAL-{self._next_id:04d}"
         self._next_id += 1
         return PaymentResult(True, transaction_id, "Paid from wallet")
@@ -74,7 +77,10 @@ class LegacyPayProSdk:
         else:
             response = f"00|PP-{self._next_reference:06d}"
             self._next_reference += 1
-        print(f'    [paypro-sdk] makeTransaction({amountInCents}, "{currencyCode}", "{merchantId}") -> "{response}"')
+        print(
+            f"    [paypro-sdk] makeTransaction({amountInCents}, "
+            f'"{currencyCode}", "{merchantId}") -> "{response}"'
+        )
         return response
 
 
@@ -86,7 +92,7 @@ class PayProAdapter:
 
     name = "PayPro (adapted)"
 
-    _MESSAGES = {
+    _MESSAGES: ClassVar[dict[str, str]] = {
         "14": "Currency not supported by PayPro",
         "51": "Declined: amount over limit",
     }
@@ -97,7 +103,9 @@ class PayProAdapter:
 
     def pay(self, amount: Decimal, currency: str) -> PaymentResult:
         cents = int((amount * 100).quantize(Decimal("1"), rounding=ROUND_HALF_UP))
-        print(f"    [adapter] {amount:.2f} {currency} -> {cents} cents, merchant {self._merchant_id}")
+        print(
+            f"    [adapter] {amount:.2f} {currency} -> {cents} cents, merchant {self._merchant_id}"
+        )
 
         code, reference = self._sdk.makeTransaction(cents, currency, self._merchant_id).split("|")
         if code == "00":
