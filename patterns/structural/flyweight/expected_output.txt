@@ -1,0 +1,17 @@
+=== Flyweight Pattern: Map markers ===
+[factory] new style: restaurant/red/32px
+[factory] new style: hotel/blue/32px
+[factory] new style: fuel/green/24px
+Created 10000 markers with 10000 style requests
+Style objects created: 3
+Memory estimate (icon=20000 B, style fields=64 B, marker fields=40 B):
+  without flyweight: 10000 x (20000 + 64 + 40) = 201040000 B (191.73 MB)
+  with flyweight:    10000 x 40 + 3 x (20000 + 64) = 460192 B (0.44 MB)
+  saved: 99.77%
+Rendering a few markers:
+  #0: draw restaurant icon (red, 32px) at (40.0000, -3.0000) label "Place 0"
+  #1: draw hotel icon (blue, 32px) at (40.0100, -3.0000) label "Place 1"
+  #2: draw fuel icon (green, 24px) at (40.0200, -3.0000) label "Place 2"
+  #3: draw restaurant icon (red, 32px) at (40.0300, -3.0000) label "Place 3"
+  #9999: draw restaurant icon (red, 32px) at (40.9900, -3.9900) label "Place 9999"
+Markers #0 and #3 share one style object: true

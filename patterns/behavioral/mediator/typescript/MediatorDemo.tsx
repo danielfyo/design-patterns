@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useRef, useState } from "react";
 import { Bot, ChatRoom, User } from "./chat.ts";
 
 const NAMES = ["alice", "bob", "carol"] as const;
@@ -16,7 +16,10 @@ export default function MediatorDemo() {
   const [to, setTo] = useState<string>(EVERYONE);
   const [text, setText] = useState("!help");
 
-  const users = useMemo(() => {
+  // Built lazily on the first click (an event handler), so that the "joined"
+  // log lines are not state updates during render.
+  const usersRef = useRef<User[] | null>(null);
+  const buildRoom = (): User[] => {
     const append = (key: string) => (line: string) =>
       setInboxes((prev) => ({ ...prev, [key]: [...(prev[key] ?? []), line.trim()] }));
     const room = new ChatRoom(append("room"));
@@ -24,10 +27,11 @@ export default function MediatorDemo() {
     created.forEach((u) => room.register(u));
     room.register(new Bot("HelpBot"));
     return created;
-  }, []);
+  };
 
   const send = () => {
-    const sender = users.find((u) => u.name === from)!;
+    usersRef.current ??= buildRoom();
+    const sender = usersRef.current.find((u) => u.name === from)!;
     if (to === EVERYONE) sender.send(text);
     else sender.sendTo(to, text);
   };

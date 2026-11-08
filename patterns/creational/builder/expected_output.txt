@@ -1,0 +1,25 @@
+=== Builder Pattern: HTTP request builder ===
+1) Step by step with the fluent builder:
+  GET https://api.example.com/users?page=2&sort=name
+    Accept: application/json
+    X-Request-Id: req-001
+    timeout: 5s
+    body: (none)
+2) Director preset jsonPost(url, body):
+  POST https://api.example.com/orders
+    Accept: application/json
+    Content-Type: application/json
+    timeout: 30s
+    body: {"sku":"A-42","qty":2}
+3) Preset authenticatedGet(url, token) + extra steps:
+  GET https://api.example.com/me?fields=name,email&lang=en
+    Accept: application/json
+    Authorization: Bearer demo-token-123
+    timeout: 10s
+    body: (none)
+4) build() validates before creating the product:
+  no url        -> error: url is required
+  GET with body -> error: GET requests cannot have a body
+  timeout 0     -> error: timeout must be positive
+5) Built requests are immutable snapshots:
+  first has 2 headers, second has 3 headers

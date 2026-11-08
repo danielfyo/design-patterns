@@ -1,0 +1,25 @@
+=== Interpreter Pattern: Pricing rule expression language ===
+Context regular: price=20, quantity=3, discount=5, shipping=6, taxRate=0.21
+Context bulk:    price=12.5, quantity=10, discount=15, shipping=8, taxRate=0.1
+Hand-built AST (no parser): price * 0.9
+  AST:     (price * 0.9)
+  regular: 18.00
+  bulk:    11.25
+Rule: price * quantity - discount
+  AST:     ((price * quantity) - discount)
+  regular: 55.00
+  bulk:    110.00
+Rule: (price + shipping) * (1 + taxRate)
+  AST:     ((price + shipping) * (1 + taxRate))
+  regular: 31.46
+  bulk:    22.55
+Rule: price * quantity - discount - shipping / 2
+  AST:     (((price * quantity) - discount) - (shipping / 2))
+  regular: 52.00
+  bulk:    106.00
+Rule: price * coupon
+  AST:     (price * coupon)
+  regular: error: unknown variable 'coupon'
+  bulk:    error: unknown variable 'coupon'
+Rule: (price + 1
+  syntax error: expected ')' but found end of input

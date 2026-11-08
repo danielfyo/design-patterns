@@ -1,0 +1,23 @@
+=== Visitor Pattern: Shopping cart: tax & shipping ===
+--- ReceiptPrinter ---
+  [Book]        Clean Code       $32.50  0.80kg
+  [Electronics] Headphones       $59.90  0.40kg
+  [Food]        Coffee beans     $12.00  1.50kg
+  [Electronics] Monitor         $199.00  5.50kg
+  [Food]        Chocolate         $3.50  0.20kg
+  Subtotal: $306.90
+--- TaxCalculator ---
+  Clean Code     books 4%             $1.30
+  Headphones     electronics 21%     $12.58
+  Coffee beans   food 10%             $1.20
+  Monitor        electronics 21%     $41.79
+  Chocolate      food 10%             $0.35
+  Total tax: $57.22
+--- ShippingCostCalculator ---
+  Clean Code     flat rate               $1.50
+  Headphones     $4.00 + $1.20/kg        $4.48
+  Coffee beans   $2.50/kg, min $3.00     $3.75
+  Monitor        $4.00 + $1.20/kg       $10.60
+  Chocolate      $2.50/kg, min $3.00     $3.00
+  Total shipping: $23.33
+Grand total: $306.90 + $57.22 tax + $23.33 shipping = $387.45

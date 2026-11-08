@@ -1,0 +1,35 @@
+=== Bridge Pattern: Reports x renderers ===
+--- Sales report as Markdown ---
+# Sales by region
+- **North**: 12500.00
+- **South**: 8300.50
+- **West**: 10199.50
+**Total: 31000.00**
+--- Sales report as HTML ---
+<h1>Sales by region</h1>
+<p><strong>North:</strong> 12500.00</p>
+<p><strong>South:</strong> 8300.50</p>
+<p><strong>West:</strong> 10199.50</p>
+<footer>Total: 31000.00</footer>
+--- Sales report as CSV ---
+report,Sales by region
+North,12500.00
+South,8300.50
+West,10199.50
+Total,31000.00
+--- Inventory report as Markdown ---
+# Inventory status
+- **Keyboards**: 42 units
+- **Monitors**: 7 units
+**Total units: 49**
+--- Inventory report as HTML ---
+<h1>Inventory status</h1>
+<p><strong>Keyboards:</strong> 42 units</p>
+<p><strong>Monitors:</strong> 7 units</p>
+<footer>Total units: 49</footer>
+--- Inventory report as CSV ---
+report,Inventory status
+Keyboards,42 units
+Monitors,7 units
+Total units,49
+2 reports x 3 renderers = 6 combinations from 5 classes (inheritance alone would need 6)
