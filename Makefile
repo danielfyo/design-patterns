@@ -1,6 +1,6 @@
 # One command to verify everything. Mirrors .github/workflows/ci.yml job by job.
 # Shell scripts are run through bash so they work even without the executable bit.
-.PHONY: all csharp python go typescript examples docs setup-repo
+.PHONY: all csharp python go typescript examples docs
 
 all: docs csharp python go typescript examples
 
@@ -36,8 +36,3 @@ examples:
 docs:
 	python3 scripts/sync_readme.py --check
 	python3 scripts/check_links.py
-
-# Applies GitHub repository settings (rulesets, security features, topics). Requires admin rights.
-# On Windows use: .\scripts\setup-repo.ps1
-setup-repo:
-	bash scripts/setup-repo.sh

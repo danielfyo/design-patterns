@@ -24,7 +24,10 @@ public sealed class File(string name, long sizeInBytes) : FileSystemNode(name)
 
     public override IEnumerable<string> FindByExtension(string extension)
     {
-        if (Name.EndsWith(extension, StringComparison.Ordinal)) yield return Name;
+        if (Name.EndsWith(extension, StringComparison.Ordinal))
+        {
+            yield return Name;
+        }
     }
 
     public override void Print(int indent = 0) =>

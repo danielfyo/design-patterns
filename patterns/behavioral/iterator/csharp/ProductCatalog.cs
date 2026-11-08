@@ -57,8 +57,15 @@ public sealed class PagedProductIterator(ProductApi api, int pageSize) : IProduc
 
     public bool HasNext()
     {
-        if (_index < _buffer.Count) return true;
-        if (!_hasMore) return false;
+        if (_index < _buffer.Count)
+        {
+            return true;
+        }
+
+        if (!_hasMore)
+        {
+            return false;
+        }
 
         var page = api.GetPage(++_pageNumber, pageSize);
         _buffer = page.Items;
@@ -91,8 +98,14 @@ public sealed class ProductCatalog(ProductApi api, int pageSize) : IEnumerable<P
         {
             var page = api.GetPage(pageNumber++, pageSize);
             foreach (var product in page.Items)
+            {
                 yield return product;
-            if (!page.HasMore) yield break;
+            }
+
+            if (!page.HasMore)
+            {
+                yield break;
+            }
         }
     }
 

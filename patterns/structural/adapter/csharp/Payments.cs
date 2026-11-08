@@ -53,9 +53,18 @@ public sealed class LegacyPayProSdk
     public string MakeTransaction(int amountInCents, string currencyCode, string merchantId)
     {
         string response;
-        if (!SupportedCurrencies.Contains(currencyCode)) response = "14|";
-        else if (amountInCents > MaxAmountInCents) response = "51|";
-        else response = $"00|PP-{_nextReference++:000000}";
+        if (!SupportedCurrencies.Contains(currencyCode))
+        {
+            response = "14|";
+        }
+        else if (amountInCents > MaxAmountInCents)
+        {
+            response = "51|";
+        }
+        else
+        {
+            response = $"00|PP-{_nextReference++:000000}";
+        }
 
         Console.WriteLine(
             $"    [paypro-sdk] makeTransaction({amountInCents}, \"{currencyCode}\", \"{merchantId}\") -> \"{response}\"");

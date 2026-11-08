@@ -39,11 +39,17 @@ public abstract class DataImporter
         foreach (var record in records)
         {
             if (string.IsNullOrWhiteSpace(record.Name))
+            {
                 Console.WriteLine($"[validate] dropped {record.Sku}: empty name");
+            }
             else if (record.Price < 0)
+            {
                 Console.WriteLine($"[validate] dropped {record.Sku}: negative price {record.Price:0.00}");
+            }
             else
+            {
                 valid.Add(record);
+            }
         }
         return valid;
     }
@@ -55,7 +61,9 @@ public abstract class DataImporter
     private static void Save(IEnumerable<Product> records)
     {
         foreach (var p in records)
+        {
             Console.WriteLine($"[save] {p.Sku,-7} {p.Name,-16} ${p.Price:0.00}");
+        }
     }
 
     /// <summary>Hook: called at the end with the summary; subclasses may extend it.</summary>
