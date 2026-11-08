@@ -1,12 +1,22 @@
 <Project>
-  <!-- Shared settings for every C# example in this repository. -->
+  <!-- Shared settings for every C# project in this repository (examples and tests). -->
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>12.0</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <LangVersion>latest</LangVersion>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <InvariantGlobalization>true</InvariantGlobalization>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!-- CS1591: missing XML comments (the lessons document intent in prose).
+         CA1515/CA1724/CA1822/CA1848: noise for teaching code (public types, short type names,
+         "make it static" suggestions, high-performance logging).
+         CA1859: "use the concrete type" - programming to interfaces is the point of the examples.
+         CA1716: identifiers that are keywords in Visual Basic (Next, To) - we keep the GoF names.
+         CA1303: literal strings passed to Console (examples are not localized). -->
+    <NoWarn>$(NoWarn);CS1591;CA1515;CA1724;CA1822;CA1848;CA1859;CA1716;CA1303</NoWarn>
   </PropertyGroup>
 </Project>

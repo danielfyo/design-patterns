@@ -59,8 +59,8 @@ public abstract class DataImporter
     }
 
     /// <summary>Hook: called at the end with the summary; subclasses may extend it.</summary>
-    protected virtual void OnComplete(ImportSummary s) =>
-        Console.WriteLine($"[complete] {s.Read} read, {s.Dropped} dropped, {s.Saved} saved, total ${s.Total:0.00}");
+    protected virtual void OnComplete(ImportSummary summary) =>
+        Console.WriteLine($"[complete] {summary.Read} read, {summary.Dropped} dropped, {summary.Saved} saved, total ${summary.Total:0.00}");
 }
 
 /// <summary>Concrete Class: parses "sku,name,price" lines and extends the completion hook.</summary>
