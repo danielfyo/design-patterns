@@ -71,8 +71,12 @@ class Directory(FileSystemNode):
         self._children.extend(nodes)
         return self
 
-    def remove(self, node: FileSystemNode) -> None:
+    def remove(self, node: FileSystemNode) -> bool:
+        """Remove a direct child. Returns False when ``node`` is not a direct child."""
+        if node not in self._children:
+            return False
         self._children.remove(node)
+        return True
 
     def size(self) -> int:
         return sum(child.size() for child in self._children)

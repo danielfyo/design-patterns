@@ -56,9 +56,15 @@ func NewDirectory(name string, children ...FileSystemNode) *Directory {
 
 func (d *Directory) Add(nodes ...FileSystemNode) { d.children = append(d.children, nodes...) }
 
-// Remove deletes a direct child. Interface values holding pointers compare by identity.
-func (d *Directory) Remove(node FileSystemNode) {
-	d.children = slices.DeleteFunc(d.children, func(c FileSystemNode) bool { return c == node })
+// Remove deletes a direct child and reports whether it was found. Interface values holding
+// pointers compare by identity.
+func (d *Directory) Remove(node FileSystemNode) bool {
+	i := slices.Index(d.children, node)
+	if i < 0 {
+		return false
+	}
+	d.children = slices.Delete(d.children, i, i+1)
+	return true
 }
 
 func (d *Directory) Name() string { return d.name }

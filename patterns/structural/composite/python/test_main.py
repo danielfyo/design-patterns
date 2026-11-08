@@ -94,8 +94,7 @@ def test_removing_a_subtree_updates_every_aggregate(example: ModuleType) -> None
 def test_remove_only_affects_direct_children(example: ModuleType) -> None:
     project, src, _ = build_project(example)
 
-    with pytest.raises(ValueError, match="not in list"):
-        project.remove(src.children[0])
+    assert project.remove(src.children[0]) is False
     assert project.size() == 12860
 
 

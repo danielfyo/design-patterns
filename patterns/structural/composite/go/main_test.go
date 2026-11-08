@@ -127,8 +127,9 @@ func TestRemovingASubtreeUpdatesEveryAggregate(t *testing.T) {
 func TestRemoveOnlyAffectsDirectChildren(t *testing.T) {
 	project, src, _ := buildProject()
 
-	project.Remove(src.children[0])
-
+	if project.Remove(src.children[0]) {
+		t.Error("Remove() = true for a nested node, want false")
+	}
 	if got := project.Size(); got != 12860 {
 		t.Errorf("Size() = %d, want 12860 (nested node must not be removed)", got)
 	}
