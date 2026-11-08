@@ -143,7 +143,11 @@ def main() -> None:
     )
 
     print("2) Director preset jsonPost(url, body):")
-    show(RequestDirector.json_post("https://api.example.com/orders", '{"sku":"A-42","qty":2}').build())
+    show(
+        RequestDirector.json_post(
+            "https://api.example.com/orders", '{"sku":"A-42","qty":2}'
+        ).build()
+    )
 
     print("3) Preset authenticatedGet(url, token) + extra steps:")
     show(
@@ -157,8 +161,14 @@ def main() -> None:
     print("4) build() validates before creating the product:")
     invalid: list[tuple[str, Callable[[], HttpRequestBuilder]]] = [
         ("no url", lambda: HttpRequestBuilder().method("GET")),
-        ("GET with body", lambda: HttpRequestBuilder().url("https://api.example.com/users").body("{}")),
-        ("timeout 0", lambda: RequestDirector.json_post("https://api.example.com/orders", "{}").timeout(0)),
+        (
+            "GET with body",
+            lambda: HttpRequestBuilder().url("https://api.example.com/users").body("{}"),
+        ),
+        (
+            "timeout 0",
+            lambda: RequestDirector.json_post("https://api.example.com/orders", "{}").timeout(0),
+        ),
     ]
     for label, make in invalid:
         try:
