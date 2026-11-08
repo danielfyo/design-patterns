@@ -1,0 +1,21 @@
+=== Adapter Pattern: Payment gateway integration ===
+Checkout with Internal wallet
+  Order A-1001: 49.99 USD
+    [wallet] debit 49.99 USD (balance 100.00 -> 50.01)
+    result: success=true, id=WAL-0001, message=Paid from wallet
+  Order A-1002: 75.00 USD
+    [wallet] insufficient balance: 50.01 < 75.00
+    result: success=false, id=-, message=Insufficient wallet balance
+Checkout with PayPro (adapted)
+  Order A-1003: 49.99 USD
+    [adapter] 49.99 USD -> 4999 cents, merchant MERCHANT-42
+    [paypro-sdk] makeTransaction(4999, "USD", "MERCHANT-42") -> "00|PP-000001"
+    result: success=true, id=PP-000001, message=Approved
+  Order A-1004: 19.50 GBP
+    [adapter] 19.50 GBP -> 1950 cents, merchant MERCHANT-42
+    [paypro-sdk] makeTransaction(1950, "GBP", "MERCHANT-42") -> "14|"
+    result: success=false, id=-, message=Currency not supported by PayPro
+  Order A-1005: 750.00 USD
+    [adapter] 750.00 USD -> 75000 cents, merchant MERCHANT-42
+    [paypro-sdk] makeTransaction(75000, "USD", "MERCHANT-42") -> "51|"
+    result: success=false, id=-, message=Declined: amount over limit

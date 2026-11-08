@@ -1,0 +1,14 @@
+=== Command Pattern: Text editor with undo/redo ===
+execute Insert "Hello" at 0            -> "Hello"
+execute Insert " world" at 5           -> "Hello world"
+execute Insert "," at 5                -> "Hello, world"
+undo    Insert "," at 5                -> "Hello world"
+redo    Insert "," at 5                -> "Hello, world"
+execute Delete 7 chars at 5            -> "Hello"
+undo    Delete 7 chars at 5            -> "Hello, world"
+execute Insert " big" at 6             -> "Hello, big world"
+redo    (nothing to redo)              -> "Hello, big world"
+execute Macro "Shout" (2 steps)        -> "Hello, big WORLD!"
+undo    Macro "Shout" (2 steps)        -> "Hello, big world"
+undo    Insert " big" at 6             -> "Hello, world"
+History: undo=3, redo=2

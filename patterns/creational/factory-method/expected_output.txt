@@ -1,0 +1,13 @@
+=== Factory Method Pattern: Notification service ===
+Client code works only with the abstract NotificationService:
+  EmailService -> EMAIL to alice@example.com: "Hi Alice, your order #1001 has shipped."
+  SmsService   -> SMS to +1-555-0100: "Hi Alice, your order #1001 ha..."
+  PushService  -> PUSH to device-a1b2: "Hi Alice, your order #1001 has shipped."
+Config-driven selection (a simple factory picks the creator):
+  channel=push   -> PushService
+    PUSH to device-c3d4: "Hi Bob, your password was changed."
+  channel=email  -> EmailService
+    EMAIL to bob@example.com: "Hi Bob, your password was changed."
+  channel=fax    -> error: unknown notification channel "fax"
+Shared business rules live in the creator:
+  SmsService   -> error: message must not be empty

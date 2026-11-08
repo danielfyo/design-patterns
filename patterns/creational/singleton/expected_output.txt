@@ -1,0 +1,14 @@
+=== Singleton Pattern: Application configuration ===
+Booting modules...
+[config] loading configuration...
+DatabaseModule: opening pool with maxConnections=20 (production)
+ApiModule: serving "Shop API" with timeoutSeconds=30
+same instance: true
+Settings (read through the shared instance):
+  appName          = Shop API
+  environment      = production
+  maxConnections   = 20
+  timeoutSeconds   = 30
+8 concurrent workers asked for the config...
+  distinct instances: 1
+  times loaded: 1

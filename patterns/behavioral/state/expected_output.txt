@@ -1,0 +1,25 @@
+=== State Pattern: Order lifecycle ===
+--- Order #1001: happy path ---
+Order #1001 created [Pending]
+> pay()
+  Payment accepted: Pending -> Paid
+> ship()
+  Order handed to the carrier: Paid -> Shipped
+> cancel()
+  ERROR: Cannot cancel an order that has already been shipped
+> deliver()
+  Order delivered to the customer: Shipped -> Delivered
+> cancel()
+  ERROR: Cannot cancel a delivered order
+Order #1001 final state: Delivered
+--- Order #1002: cancellation ---
+Order #1002 created [Pending]
+> ship()
+  ERROR: Cannot ship an order that has not been paid
+> pay()
+  Payment accepted: Pending -> Paid
+> cancel()
+  Order cancelled, payment refunded: Paid -> Cancelled
+> deliver()
+  ERROR: Cannot deliver a cancelled order
+Order #1002 final state: Cancelled

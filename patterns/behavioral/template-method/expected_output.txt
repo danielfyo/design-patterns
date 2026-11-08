@@ -1,0 +1,17 @@
+=== Template Method Pattern: Data importer ===
+--- CsvImporter ---
+[parse] 4 record(s) read
+[validate] dropped bk-002: empty name
+[validate] dropped bk-003: negative price -5.00
+[save] bk-001  Clean Code       $32.50
+[save] bk-004  Design Patterns  $45.00
+[complete] 4 read, 2 dropped, 2 saved, total $77.50
+[notify] import report sent to the catalog team
+--- JsonImporter ---
+[parse] 3 record(s) read
+[validate] dropped el-300: empty name
+[transform] el-100 -> EL-100
+[transform] el-200 -> EL-200
+[save] EL-100  USB-C cable      $9.99
+[save] EL-200  Headphones       $59.90
+[complete] 3 read, 1 dropped, 2 saved, total $69.89
