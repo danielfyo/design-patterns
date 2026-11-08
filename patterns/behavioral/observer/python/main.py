@@ -77,7 +77,10 @@ class PortfolioTracker:
     @property
     def value(self) -> Decimal:
         return sum(
-            (self._last_prices.get(symbol, Decimal("0")) * shares for symbol, shares in self._holdings.items()),
+            (
+                self._last_prices.get(symbol, Decimal("0")) * shares
+                for symbol, shares in self._holdings.items()
+            ),
             Decimal("0"),
         )
 

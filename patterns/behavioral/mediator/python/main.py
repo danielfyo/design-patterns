@@ -57,7 +57,9 @@ class Bot(Participant):
 
     def receive(self, sender: str, message: str, is_private: bool) -> None:
         if message.strip() == "!help":
-            self.send_to(sender, f"Hi {sender}! Commands: !help. Private messages reach one person only.")
+            self.send_to(
+                sender, f"Hi {sender}! Commands: !help. Private messages reach one person only."
+            )
 
 
 class ChatRoom:
