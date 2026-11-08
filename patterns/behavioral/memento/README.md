@@ -106,6 +106,7 @@ All four implementations model exactly the same thing and print exactly the same
 
 ### Expected output
 
+<!-- output: expected_output.txt -->
 ```text
 === Memento Pattern: Editor snapshots ===
 type "Hello"         "Hello|" (cursor 5)
@@ -126,6 +127,7 @@ undo                 "Hello|" (cursor 5)
 [history] nothing to undo
 undo                 "Hello|" (cursor 5)
 ```
+<!-- /output -->
 
 ## Code walkthrough
 

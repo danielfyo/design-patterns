@@ -108,6 +108,7 @@ All four implementations model exactly the same thing and print exactly the same
 
 ### Expected output
 
+<!-- output: expected_output.txt -->
 ```text
 === Template Method Pattern: Data importer ===
 --- CsvImporter ---
@@ -127,6 +128,7 @@ All four implementations model exactly the same thing and print exactly the same
 [save] EL-200  Headphones       $59.90
 [complete] 3 read, 1 dropped, 2 saved, total $69.89
 ```
+<!-- /output -->
 
 ## Code walkthrough
 

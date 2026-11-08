@@ -122,6 +122,7 @@ travelled.
 
 ### Expected output
 
+<!-- output: expected_output.txt -->
 ```text
 === Chain of Responsibility Pattern: HTTP request middleware pipeline ===
 Pipeline: Authentication -> RateLimit(2 per IP) -> Validation -> OrderController
@@ -159,6 +160,7 @@ Request 7: POST /invoices ip=10.0.0.3 token=token-bob body="invoice #42"
   [OrderController] not my route, passing on
   => 404 Not Found - No handler for /invoices
 ```
+<!-- /output -->
 
 ## Code walkthrough
 

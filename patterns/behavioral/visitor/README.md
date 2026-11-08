@@ -129,6 +129,7 @@ The client finally combines the three totals into a grand total.
 
 ### Expected output
 
+<!-- output: expected_output.txt -->
 ```text
 === Visitor Pattern: Shopping cart: tax & shipping ===
 --- ReceiptPrinter ---
@@ -154,6 +155,7 @@ The client finally combines the three totals into a grand total.
   Total shipping: $23.33
 Grand total: $306.90 + $57.22 tax + $23.33 shipping = $387.45
 ```
+<!-- /output -->
 
 ## Code walkthrough
 

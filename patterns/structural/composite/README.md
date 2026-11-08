@@ -109,6 +109,7 @@ All four implementations model exactly the same thing and print exactly the same
 
 ### Expected output
 
+<!-- output: expected_output.txt -->
 ```text
 === Composite Pattern: File system ===
 project/ (12860 bytes)
@@ -142,6 +143,7 @@ project/ (7100 bytes)
       Footer.tsx (900 bytes)
 Total size: 7100 bytes, files: 6
 ```
+<!-- /output -->
 
 ## Code walkthrough
 

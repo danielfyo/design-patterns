@@ -113,6 +113,7 @@ All four implementations model exactly the same thing and print exactly the same
 
 ### Expected output
 
+<!-- output: expected_output.txt -->
 ```text
 === Iterator Pattern: Paginated API results ===
 1) Explicit iterator: hasNext() / next()
@@ -136,6 +137,7 @@ Done: 7 products, 3 requests
   #4 Webcam     $59.50
 Done: 4 products, 2 requests (page 3 was never fetched)
 ```
+<!-- /output -->
 
 ## Code walkthrough
 

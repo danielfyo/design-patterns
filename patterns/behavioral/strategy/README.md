@@ -100,6 +100,7 @@ The client prices two orders ($80 and $150, both 4 kg) with each strategy, reusi
 
 ### Expected output
 
+<!-- output: expected_output.txt -->
 ```text
 === Strategy Pattern: Shipping cost calculator ===
 Order: subtotal=$80.00, weight=4.0kg
@@ -113,6 +114,7 @@ Order: subtotal=$150.00, weight=4.0kg
   Free over $100   -> $0.00
   Store pickup     -> $0.00
 ```
+<!-- /output -->
 
 ## Code walkthrough
 

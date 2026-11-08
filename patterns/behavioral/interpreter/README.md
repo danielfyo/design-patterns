@@ -134,6 +134,7 @@ All four implementations print exactly the same output:
 
 ### Expected output
 
+<!-- output: expected_output.txt -->
 ```text
 === Interpreter Pattern: Pricing rule expression language ===
 Context regular: price=20, quantity=3, discount=5, shipping=6, taxRate=0.21
@@ -161,6 +162,7 @@ Rule: price * coupon
 Rule: (price + 1
   syntax error: expected ')' but found end of input
 ```
+<!-- /output -->
 
 ## Code walkthrough
 

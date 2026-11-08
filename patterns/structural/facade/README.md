@@ -104,6 +104,7 @@ The final stock line proves the rollback: the monitor count is back to 5.
 
 ### Expected output
 
+<!-- output: expected_output.txt -->
 ```text
 === Facade Pattern: E-commerce order placement ===
 Order 1: Alice buys 2 x keyboard, 1 x mouse
@@ -126,6 +127,7 @@ Result: success=false, error=webcam is out of stock (requested 5, available 3)
 
 Stock after both orders: keyboard=8, mouse=4, monitor=5, webcam=3
 ```
+<!-- /output -->
 
 ## Code walkthrough
 

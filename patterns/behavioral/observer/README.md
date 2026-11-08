@@ -108,6 +108,7 @@ All four implementations model exactly the same thing and print exactly the same
 
 ### Expected output
 
+<!-- output: expected_output.txt -->
 ```text
 === Observer Pattern: Stock price ticker ===
 [ticker] AAPL = $195.50 (notifying 3 observers)
@@ -128,6 +129,7 @@ All four implementations model exactly the same thing and print exactly the same
 [ticker] MSFT = $398.00 (notifying 2 observers)
   [portfolio] value: $4021.00
 ```
+<!-- /output -->
 
 ## Code walkthrough
 

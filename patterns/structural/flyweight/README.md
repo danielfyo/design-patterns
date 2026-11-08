@@ -102,6 +102,7 @@ Finally a few markers are drawn, and the client checks that markers #0 and #3 po
 
 ### Expected output
 
+<!-- output: expected_output.txt -->
 ```text
 === Flyweight Pattern: Map markers ===
 [factory] new style: restaurant/red/32px
@@ -121,6 +122,7 @@ Rendering a few markers:
   #9999: draw restaurant icon (red, 32px) at (40.9900, -3.9900) label "Place 9999"
 Markers #0 and #3 share one style object: true
 ```
+<!-- /output -->
 
 ## Code walkthrough
 

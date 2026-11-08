@@ -107,6 +107,7 @@ All four implementations model exactly the same thing and print exactly the same
 
 ### Expected output
 
+<!-- output: expected_output.txt -->
 ```text
 === Builder Pattern: HTTP request builder ===
 1) Step by step with the fluent builder:
@@ -134,6 +135,7 @@ All four implementations model exactly the same thing and print exactly the same
 5) Built requests are immutable snapshots:
   first has 2 headers, second has 3 headers
 ```
+<!-- /output -->
 
 ## Code walkthrough
 

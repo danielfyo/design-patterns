@@ -112,6 +112,7 @@ Four requests result in **one** connection and **two** remote fetches.
 
 ### Expected output
 
+<!-- output: expected_output.txt -->
 ```text
 === Proxy Pattern: Document store proxy ===
 Proxy ready, real store created: false
@@ -133,6 +134,7 @@ alice (editor) asks for doc-2
   -> "Merger plan" (confidential)
 Stats: 4 requests, 2 remote fetches, real store created: true
 ```
+<!-- /output -->
 
 ## Code walkthrough
 

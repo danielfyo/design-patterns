@@ -111,6 +111,7 @@ All four implementations model exactly the same thing and print exactly the same
 
 ### Expected output
 
+<!-- output: expected_output.txt -->
 ```text
 === Mediator Pattern: Chat room ===
 [room] alice joined
@@ -135,6 +136,7 @@ carol -> bob (private): Sure!
 alice -> dave (private): Are you there?
 [room] dave is not in this room
 ```
+<!-- /output -->
 
 ## Code walkthrough
 

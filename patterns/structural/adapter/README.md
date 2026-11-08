@@ -120,6 +120,7 @@ All four implementations model exactly the same thing and print exactly the same
 
 ### Expected output
 
+<!-- output: expected_output.txt -->
 ```text
 === Adapter Pattern: Payment gateway integration ===
 Checkout with Internal wallet
@@ -143,6 +144,7 @@ Checkout with PayPro (adapted)
     [paypro-sdk] makeTransaction(75000, "USD", "MERCHANT-42") -> "51|"
     result: success=false, id=-, message=Declined: amount over limit
 ```
+<!-- /output -->
 
 ## Code walkthrough
 

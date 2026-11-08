@@ -129,6 +129,7 @@ All four implementations model exactly the same thing and print exactly the same
 
 ### Expected output
 
+<!-- output: expected_output.txt -->
 ```text
 === Factory Method Pattern: Notification service ===
 Client code works only with the abstract NotificationService:
@@ -144,6 +145,7 @@ Config-driven selection (a simple factory picks the creator):
 Shared business rules live in the creator:
   SmsService   -> error: message must not be empty
 ```
+<!-- /output -->
 
 ## Code walkthrough
 

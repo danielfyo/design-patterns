@@ -115,6 +115,7 @@ All four implementations model exactly the same thing and print exactly the same
 
 ### Expected output
 
+<!-- output: expected_output.txt -->
 ```text
 === Abstract Factory Pattern: UI theme kit ===
 Settings screen with LightTheme:
@@ -131,6 +132,7 @@ Picking the factory from a preference string:
 Mixing families by hand (bypassing the factory):
   error: cannot mix themes: LightButton is light, DarkCheckbox is dark
 ```
+<!-- /output -->
 
 ## Code walkthrough
 

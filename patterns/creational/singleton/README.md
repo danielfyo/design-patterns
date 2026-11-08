@@ -93,6 +93,7 @@ All four implementations model exactly the same thing and print exactly the same
 
 ### Expected output
 
+<!-- output: expected_output.txt -->
 ```text
 === Singleton Pattern: Application configuration ===
 Booting modules...
@@ -109,6 +110,7 @@ Settings (read through the shared instance):
   distinct instances: 1
   times loaded: 1
 ```
+<!-- /output -->
 
 ## Code walkthrough
 

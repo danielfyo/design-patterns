@@ -114,6 +114,7 @@ The client builds three stacks from the same building blocks:
 
 ### Expected output
 
+<!-- output: expected_output.txt -->
 ```text
 === Decorator Pattern: Data fetcher with cross-cutting concerns ===
 Stack A: Logging -> Caching -> Retry(3) -> Http
@@ -153,6 +154,7 @@ Stack C: Retry(2) -> Http
 [retry] attempt 2/2 failed: 503 Service Unavailable, giving up
 error: 503 Service Unavailable
 ```
+<!-- /output -->
 
 ## Code walkthrough
 

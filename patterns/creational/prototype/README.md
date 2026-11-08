@@ -97,6 +97,7 @@ All four implementations model exactly the same thing and print exactly the same
 
 ### Expected output
 
+<!-- output: expected_output.txt -->
 ```text
 === Prototype Pattern: Document templates ===
 Registered templates: invoice, report
@@ -114,6 +115,7 @@ Shallow copy (what NOT to do):
 Unknown template:
   error: no template named "memo"
 ```
+<!-- /output -->
 
 ## Code walkthrough
 

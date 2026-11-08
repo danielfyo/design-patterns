@@ -115,6 +115,7 @@ The client runs two orders: `#1001` follows the happy path (and tries to cancel 
 
 ### Expected output
 
+<!-- output: expected_output.txt -->
 ```text
 === State Pattern: Order lifecycle ===
 --- Order #1001: happy path ---
@@ -142,6 +143,7 @@ Order #1002 created [Pending]
   ERROR: Cannot deliver a cancelled order
 Order #1002 final state: Cancelled
 ```
+<!-- /output -->
 
 ## Code walkthrough
 

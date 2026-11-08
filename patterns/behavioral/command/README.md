@@ -126,6 +126,7 @@ and that the macro is undone with a single undo. Each line shows the document af
 
 ### Expected output
 
+<!-- output: expected_output.txt -->
 ```text
 === Command Pattern: Text editor with undo/redo ===
 execute Insert "Hello" at 0            -> "Hello"
@@ -142,6 +143,7 @@ undo    Macro "Shout" (2 steps)        -> "Hello, big world"
 undo    Insert " big" at 6             -> "Hello, world"
 History: undo=3, redo=2
 ```
+<!-- /output -->
 
 ## Code walkthrough
 

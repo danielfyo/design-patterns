@@ -111,6 +111,7 @@ All four implementations model exactly the same thing and print exactly the same
 
 ### Expected output
 
+<!-- output: expected_output.txt -->
 ```text
 === Bridge Pattern: Reports x renderers ===
 --- Sales report as Markdown ---
@@ -148,6 +149,7 @@ Monitors,7 units
 Total units,49
 2 reports x 3 renderers = 6 combinations from 5 classes (inheritance alone would need 6)
 ```
+<!-- /output -->
 
 ## Code walkthrough
 
