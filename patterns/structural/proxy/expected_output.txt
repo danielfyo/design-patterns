@@ -1,0 +1,19 @@
+=== Proxy Pattern: Document store proxy ===
+Proxy ready, real store created: false
+alice (editor) asks for doc-1
+[proxy] cache miss doc-1
+[proxy] creating the real store on first use
+[remote] connecting to document server...
+[remote] fetching doc-1
+  -> "Q3 roadmap" (public)
+bob (viewer) asks for doc-1
+[proxy] cache hit doc-1
+  -> "Q3 roadmap" (public)
+bob (viewer) asks for doc-2
+[proxy] cache miss doc-2
+[remote] fetching doc-2
+  -> access denied: viewer cannot read confidential doc-2
+alice (editor) asks for doc-2
+[proxy] cache hit doc-2
+  -> "Merger plan" (confidential)
+Stats: 4 requests, 2 remote fetches, real store created: true

@@ -24,7 +24,7 @@ foreach (var extension in new[] { ".ts", ".tsx" })
 
 // The client treats a single file and a whole folder uniformly.
 Console.WriteLine("The same calls work on a leaf and on a folder:");
-foreach (FileSystemNode node in new FileSystemNode[] { appTs, src })
+foreach (var node in new FileSystemNode[] { appTs, src })
 {
     Console.WriteLine($"  {node.Name,-16} -> {node.Size()} bytes, {node.CountFiles()} file(s)");
 }
