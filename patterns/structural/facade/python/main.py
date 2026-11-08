@@ -76,7 +76,10 @@ class PaymentService:
     def charge(self, card_number: str, amount: Decimal) -> str:
         transaction_id = f"TXN-{self._next_transaction}"
         self._next_transaction += 1
-        print(f"  [payment] charged ${amount:.2f} to card ending {card_number[-4:]} ({transaction_id})")
+        print(
+            f"  [payment] charged ${amount:.2f} to card ending {card_number[-4:]} "
+            f"({transaction_id})"
+        )
         return transaction_id
 
     def refund(self, transaction_id: str, amount: Decimal) -> None:
@@ -123,18 +126,25 @@ class OrderFacade:
         self._shipping = shipping
         self._notification = notification
 
-    def place_order(self, customer: Customer, items: list[OrderItem], card_number: str) -> OrderResult:
+    def place_order(
+        self, customer: Customer, items: list[OrderItem], card_number: str
+    ) -> OrderResult:
         # 1-2. Check stock and reserve each item; roll back earlier reservations on failure.
         reserved: list[OrderItem] = []
         for item in items:
             if not self._inventory.is_available(item.sku, item.quantity):
                 for r in reserved:
                     self._inventory.release(r.sku, r.quantity)
-                self._notification.send_email(customer.email, f"Order failed: {item.sku} is out of stock")
+                self._notification.send_email(
+                    customer.email, f"Order failed: {item.sku} is out of stock"
+                )
                 available = self._inventory.stock_of(item.sku)
                 return OrderResult(
                     success=False,
-                    error=f"{item.sku} is out of stock (requested {item.quantity}, available {available})",
+                    error=(
+                        f"{item.sku} is out of stock "
+                        f"(requested {item.quantity}, available {available})"
+                    ),
                 )
             self._inventory.reserve(item.sku, item.quantity)
             reserved.append(item)
@@ -147,7 +157,9 @@ class OrderFacade:
         tracking = self._shipping.create_shipment(customer, items)
 
         # 5. Tell the customer.
-        self._notification.send_email(customer.email, f"Order confirmed, total ${total:.2f}, tracking {tracking}")
+        self._notification.send_email(
+            customer.email, f"Order confirmed, total ${total:.2f}, tracking {tracking}"
+        )
         return OrderResult(success=True, total=total, tracking=tracking)
 
 
@@ -167,9 +179,13 @@ def main() -> None:
         else:
             print(f"Result: success=false, error={result.error}")
 
-    place_and_report(1, Customer("Alice", "alice@example.com"), [OrderItem("keyboard", 2), OrderItem("mouse", 1)])
+    place_and_report(
+        1, Customer("Alice", "alice@example.com"), [OrderItem("keyboard", 2), OrderItem("mouse", 1)]
+    )
     print()
-    place_and_report(2, Customer("Bob", "bob@example.com"), [OrderItem("monitor", 1), OrderItem("webcam", 5)])
+    place_and_report(
+        2, Customer("Bob", "bob@example.com"), [OrderItem("monitor", 1), OrderItem("webcam", 5)]
+    )
     print()
 
     skus = ["keyboard", "mouse", "monitor", "webcam"]

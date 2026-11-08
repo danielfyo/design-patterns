@@ -119,7 +119,10 @@ def main() -> None:
     request(alice, "doc-2")
 
     created = str(proxy.is_real_store_created).lower()
-    print(f"Stats: {proxy.requests} requests, {proxy.remote_fetches} remote fetches, real store created: {created}")
+    print(
+        f"Stats: {proxy.requests} requests, {proxy.remote_fetches} remote fetches, "
+        f"real store created: {created}"
+    )
 
 
 if __name__ == "__main__":

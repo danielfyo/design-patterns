@@ -90,13 +90,16 @@ def main() -> None:
     style_bytes = icon_b + fields_b
     without = marker_count * (style_bytes + marker_b)
     with_fw = marker_count * marker_b + factory.count * style_bytes
-    print(f"Memory estimate (icon={icon_b} B, style fields={fields_b} B, marker fields={marker_b} B):")
+    print(
+        f"Memory estimate (icon={icon_b} B, style fields={fields_b} B, marker fields={marker_b} B):"
+    )
     print(
         f"  without flyweight: {marker_count} x ({icon_b} + {fields_b} + {marker_b}) "
         f"= {without} B ({without / 1048576:.2f} MB)"
     )
     print(
-        f"  with flyweight:    {marker_count} x {marker_b} + {factory.count} x ({icon_b} + {fields_b}) "
+        f"  with flyweight:    {marker_count} x {marker_b} "
+        f"+ {factory.count} x ({icon_b} + {fields_b}) "
         f"= {with_fw} B ({with_fw / 1048576:.2f} MB)"
     )
     print(f"  saved: {(1 - with_fw / without) * 100:.2f}%")
