@@ -82,12 +82,18 @@ public sealed class MacroCommand(string name, IReadOnlyList<ICommand> commands) 
 
     public void Execute()
     {
-        foreach (var command in commands) command.Execute();
+        foreach (var command in commands)
+        {
+            command.Execute();
+        }
     }
 
     public void Undo()
     {
-        for (var i = commands.Count - 1; i >= 0; i--) commands[i].Undo();
+        for (var i = commands.Count - 1; i >= 0; i--)
+        {
+            commands[i].Undo();
+        }
     }
 }
 
@@ -113,7 +119,11 @@ public sealed class CommandHistory
     /// <summary>Undoes the last command and returns it, or null if there is nothing to undo.</summary>
     public ICommand? Undo()
     {
-        if (!_undo.TryPop(out var command)) return null;
+        if (!_undo.TryPop(out var command))
+        {
+            return null;
+        }
+
         command.Undo();
         _redo.Push(command);
         return command;
@@ -122,7 +132,11 @@ public sealed class CommandHistory
     /// <summary>Re-executes the last undone command and returns it, or null if there is nothing to redo.</summary>
     public ICommand? Redo()
     {
-        if (!_redo.TryPop(out var command)) return null;
+        if (!_redo.TryPop(out var command))
+        {
+            return null;
+        }
+
         command.Execute();
         _undo.Push(command);
         return command;

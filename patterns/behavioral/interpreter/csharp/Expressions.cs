@@ -80,7 +80,11 @@ public sealed record Divide(IExpression Left, IExpression Right) : BinaryExpress
     public override double Interpret(Context context)
     {
         var divisor = Right.Interpret(context);
-        if (divisor == 0) throw new ExpressionException("division by zero");
+        if (divisor == 0)
+        {
+            throw new ExpressionException("division by zero");
+        }
+
         return Left.Interpret(context) / divisor;
     }
 }

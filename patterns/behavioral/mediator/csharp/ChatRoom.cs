@@ -51,7 +51,9 @@ public sealed class Bot(string name) : Participant(name)
     public override void Receive(string from, string message, bool isPrivate)
     {
         if (message.Trim() == "!help")
+        {
             SendTo(from, $"Hi {from}! Commands: !help. Private messages reach one person only.");
+        }
     }
 }
 
@@ -76,7 +78,9 @@ public sealed class ChatRoom : IChatMediator
         foreach (var participant in _participants.ToArray())
         {
             if (participant != from)
+            {
                 participant.Receive(from.Name, message, isPrivate: false);
+            }
         }
     }
 

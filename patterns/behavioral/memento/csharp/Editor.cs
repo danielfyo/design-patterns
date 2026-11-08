@@ -40,7 +40,10 @@ public sealed class Editor
     public void Restore(IEditorSnapshot snapshot)
     {
         if (snapshot is not EditorSnapshot s)
+        {
             throw new ArgumentException("Not a snapshot created by an Editor.", nameof(snapshot));
+        }
+
         Content = s.Content;
         Cursor = s.Cursor;
     }

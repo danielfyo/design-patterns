@@ -56,7 +56,9 @@ public abstract class NotificationService
     public string Notify(User user, string message)
     {
         if (string.IsNullOrWhiteSpace(message))
+        {
             throw new ArgumentException("message must not be empty");
+        }
 
         INotifier notifier = CreateNotifier();
         return notifier.Send(user, $"Hi {user.Name}, {message}");

@@ -25,7 +25,10 @@ public sealed class VisitorTests
 
     private static void VisitAll(ICartVisitor visitor, params ICartItem[] items)
     {
-        foreach (var item in items) item.Accept(visitor);
+        foreach (var item in items)
+        {
+            item.Accept(visitor);
+        }
     }
 
     [Fact]

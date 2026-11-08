@@ -104,7 +104,10 @@ public sealed class RetryFetcher(IDataFetcher inner, int maxAttempts) : FetcherD
             {
                 var last = attempt >= maxAttempts;
                 Console.WriteLine($"[retry] attempt {attempt}/{maxAttempts} failed: {ex.Message}, {(last ? "giving up" : "retrying")}");
-                if (last) throw;
+                if (last)
+                {
+                    throw;
+                }
             }
         }
     }
