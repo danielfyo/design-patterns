@@ -1,0 +1,22 @@
+=== Mediator Pattern: Chat room ===
+[room] alice joined
+[room] bob joined
+[room] carol joined
+[room] HelpBot joined
+alice -> everyone: Hi everyone!
+  [bob] alice: Hi everyone!
+  [carol] alice: Hi everyone!
+bob -> everyone: Welcome, alice!
+  [alice] bob: Welcome, alice!
+  [carol] bob: Welcome, alice!
+carol -> everyone: !help
+  [alice] carol: !help
+  [bob] carol: !help
+HelpBot -> carol (private): Hi carol! Commands: !help. Private messages reach one person only.
+  [carol] HelpBot (private): Hi carol! Commands: !help. Private messages reach one person only.
+bob -> carol (private): Lunch at 1pm?
+  [carol] bob (private): Lunch at 1pm?
+carol -> bob (private): Sure!
+  [bob] carol (private): Sure!
+alice -> dave (private): Are you there?
+[room] dave is not in this room

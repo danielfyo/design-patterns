@@ -1,0 +1,35 @@
+=== Chain of Responsibility Pattern: HTTP request middleware pipeline ===
+Pipeline: Authentication -> RateLimit(2 per IP) -> Validation -> OrderController
+Request 1: POST /orders ip=10.0.0.1 token=token-alice body="2x coffee"
+  [Authentication] ok, user=alice
+  [RateLimit] 10.0.0.1 request 1/2
+  [Validation] ok
+  [OrderController] order accepted
+  => 200 OK - Order accepted for alice: 2x coffee
+Request 2: POST /orders ip=10.0.0.2 token=(none) body="1x tea"
+  [Authentication] rejected: missing token
+  => 401 Unauthorized - Missing token
+Request 3: POST /orders ip=10.0.0.2 token=forged-token body="1x tea"
+  [Authentication] rejected: invalid token
+  => 401 Unauthorized - Invalid token
+Request 4: POST /orders ip=10.0.0.1 token=token-alice body=""
+  [Authentication] ok, user=alice
+  [RateLimit] 10.0.0.1 request 2/2
+  [Validation] rejected: empty body
+  => 400 Bad Request - Body must not be empty
+Request 5: POST /orders ip=10.0.0.1 token=token-alice body="1x tea"
+  [Authentication] ok, user=alice
+  [RateLimit] rejected: 10.0.0.1 exceeded 2 requests
+  => 429 Too Many Requests - Rate limit exceeded
+Request 6: POST /orders ip=10.0.0.3 token=token-bob body="3x muffin"
+  [Authentication] ok, user=bob
+  [RateLimit] 10.0.0.3 request 1/2
+  [Validation] ok
+  [OrderController] order accepted
+  => 200 OK - Order accepted for bob: 3x muffin
+Request 7: POST /invoices ip=10.0.0.3 token=token-bob body="invoice #42"
+  [Authentication] ok, user=bob
+  [RateLimit] 10.0.0.3 request 2/2
+  [Validation] ok
+  [OrderController] not my route, passing on
+  => 404 Not Found - No handler for /invoices

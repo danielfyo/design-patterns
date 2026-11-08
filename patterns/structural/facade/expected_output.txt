@@ -1,0 +1,20 @@
+=== Facade Pattern: E-commerce order placement ===
+Order 1: Alice buys 2 x keyboard, 1 x mouse
+  [inventory] check keyboard x2: ok (10 in stock)
+  [inventory] reserved keyboard x2
+  [inventory] check mouse x1: ok (5 in stock)
+  [inventory] reserved mouse x1
+  [payment] charged $189.97 to card ending 4242 (TXN-1001)
+  [shipping] shipment SHP-5001 created for Alice (3 items)
+  [email] to alice@example.com: Order confirmed, total $189.97, tracking SHP-5001
+Result: success=true, total=$189.97, tracking=SHP-5001
+
+Order 2: Bob buys 1 x monitor, 5 x webcam
+  [inventory] check monitor x1: ok (5 in stock)
+  [inventory] reserved monitor x1
+  [inventory] check webcam x5: only 3 in stock
+  [inventory] released monitor x1 (rollback)
+  [email] to bob@example.com: Order failed: webcam is out of stock
+Result: success=false, error=webcam is out of stock (requested 5, available 3)
+
+Stock after both orders: keyboard=8, mouse=4, monitor=5, webcam=3

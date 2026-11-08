@@ -1,0 +1,18 @@
+=== Observer Pattern: Stock price ticker ===
+[ticker] AAPL = $195.50 (notifying 3 observers)
+  [display] AAPL: $195.50
+  [portfolio] value: $1955.00
+[ticker] MSFT = $410.20 (notifying 3 observers)
+  [display] MSFT: $410.20
+  [portfolio] value: $4006.00
+[ticker] AAPL = $201.25 (notifying 3 observers)
+  [display] AAPL: $201.25
+  [alert] AAPL is above $200.00: now $201.25
+  [portfolio] value: $4063.50
+-- display unsubscribed --
+[ticker] AAPL = $203.10 (notifying 2 observers)
+  [alert] AAPL is above $200.00: now $203.10
+  [portfolio] value: $4082.00
+[ticker] GOOG = $172.40 (notifying 2 observers)
+[ticker] MSFT = $398.00 (notifying 2 observers)
+  [portfolio] value: $4021.00

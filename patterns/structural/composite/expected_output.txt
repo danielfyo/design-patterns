@@ -1,0 +1,31 @@
+=== Composite Pattern: File system ===
+project/ (12860 bytes)
+  README.md (1200 bytes)
+  package.json (800 bytes)
+  src/ (5100 bytes)
+    index.ts (300 bytes)
+    app.ts (2400 bytes)
+    components/ (2400 bytes)
+      Header.tsx (1500 bytes)
+      Footer.tsx (900 bytes)
+  assets/ (5760 bytes)
+    logo.png (5120 bytes)
+    styles.css (640 bytes)
+Total size: 12860 bytes
+Files: 8
+Find *.ts: index.ts, app.ts
+Find *.tsx: Header.tsx, Footer.tsx
+The same calls work on a leaf and on a folder:
+  app.ts           -> 2400 bytes, 1 file(s)
+  src              -> 5100 bytes, 4 file(s)
+Removing assets/ from project/...
+project/ (7100 bytes)
+  README.md (1200 bytes)
+  package.json (800 bytes)
+  src/ (5100 bytes)
+    index.ts (300 bytes)
+    app.ts (2400 bytes)
+    components/ (2400 bytes)
+      Header.tsx (1500 bytes)
+      Footer.tsx (900 bytes)
+Total size: 7100 bytes, files: 6

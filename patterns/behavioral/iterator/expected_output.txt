@@ -1,0 +1,21 @@
+=== Iterator Pattern: Paginated API results ===
+1) Explicit iterator: hasNext() / next()
+[api] fetching page 1
+  #1 Keyboard   $49.99
+  #2 Mouse      $19.99
+  #3 Monitor    $189.00
+[api] fetching page 2
+  #4 Webcam     $59.50
+  #5 Headset    $79.90
+  #6 USB hub    $24.00
+[api] fetching page 3
+  #7 Desk lamp  $34.75
+Done: 7 products, 3 requests
+2) Idiomatic loop, stopping after 4 products
+[api] fetching page 1
+  #1 Keyboard   $49.99
+  #2 Mouse      $19.99
+  #3 Monitor    $189.00
+[api] fetching page 2
+  #4 Webcam     $59.50
+Done: 4 products, 2 requests (page 3 was never fetched)

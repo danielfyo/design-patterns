@@ -1,0 +1,126 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  dotnet:
+    name: C# (.NET 8)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6.1.0
+        with: { dotnet-version: "8.0.x" }
+      - name: Restore from lock files
+        run: dotnet restore DesignPatterns.sln --locked-mode
+      - name: Build (analyzers, code style and warnings as errors)
+        run: dotnet build DesignPatterns.sln --no-restore --configuration Release
+      - name: Test with coverage
+        run: dotnet test DesignPatterns.sln --configuration Release --no-build --collect:"XPlat Code Coverage" --results-directory coverage
+      - name: Coverage summary
+        run: |
+          dotnet tool install --global dotnet-reportgenerator-globaltool
+          reportgenerator -reports:"coverage/**/coverage.cobertura.xml" -targetdir:coverage/report -reporttypes:MarkdownSummaryGithub
+          { echo "## .NET coverage"; cat coverage/report/SummaryGithub.md; } >> "$GITHUB_STEP_SUMMARY"
+
+  python:
+    name: Python
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.13"]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with: { python-version: "${{ matrix.python-version }}", cache: pip, cache-dependency-path: pyproject.toml }
+      - run: pip install ".[dev]"
+      - name: Lint, type-check (mypy --strict) and test with coverage
+        run: bash scripts/check-python.sh --cov
+      - name: Coverage summary
+        if: matrix.python-version == '3.13'
+        run: |
+          { echo "## Python coverage"; python -m coverage report --format=markdown; } >> "$GITHUB_STEP_SUMMARY"
+
+  go:
+    name: Go
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with: { go-version-file: go.mod }
+      - name: Format
+        run: test -z "$(gofmt -l .)" || { gofmt -l .; exit 1; }
+      - run: go vet ./...
+      - name: Test with race detector and coverage
+        run: go test -race -coverprofile=coverage.out ./...
+      - name: Coverage summary
+        run: |
+          { echo "## Go coverage"; echo '```'; go tool cover -func=coverage.out | tail -n 1; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+
+  typescript:
+    name: TypeScript + React
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with: { node-version: "22", cache: npm }
+      - run: npm ci
+      - name: Audit dependencies
+        run: npm audit --audit-level=moderate
+      - run: npm run typecheck
+      - name: Test with coverage (Vitest + Testing Library)
+        run: npm run coverage
+      - name: Build the playground
+        run: npm run build:playground
+      - name: Coverage summary
+        run: |
+          { echo "## TypeScript coverage"; echo '```'; cat coverage/summary.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+
+  examples:
+    name: Same output in every language
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6.1.0
+        with: { dotnet-version: "8.0.x" }
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with: { node-version: "22", cache: npm }
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with: { python-version: "3.13" }
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with: { go-version-file: go.mod }
+      - run: npm ci
+      - name: Run every example and compare with expected_output.txt
+        run: bash scripts/verify.sh
+
+  docs:
+    name: Docs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: README output blocks match expected_output.txt
+        run: python3 scripts/sync_readme.py --check
+      - name: Relative links and anchors resolve
+        run: python3 scripts/check_links.py

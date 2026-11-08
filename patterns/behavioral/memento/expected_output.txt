@@ -1,0 +1,18 @@
+=== Memento Pattern: Editor snapshots ===
+type "Hello"         "Hello|" (cursor 5)
+[history] backup saved (1 in stack)
+type " world"        "Hello world|" (cursor 11)
+[history] backup saved (2 in stack)
+move cursor to 5     "Hello| world" (cursor 5)
+type " cruel"        "Hello cruel| world" (cursor 11)
+[history] restored latest backup (1 left)
+undo                 "Hello world|" (cursor 11)
+type "!"             "Hello world!|" (cursor 12)
+[history] backup saved (2 in stack)
+backspace 7          "Hello|" (cursor 5)
+[history] restored latest backup (1 left)
+undo                 "Hello world!|" (cursor 12)
+[history] restored latest backup (0 left)
+undo                 "Hello|" (cursor 5)
+[history] nothing to undo
+undo                 "Hello|" (cursor 5)

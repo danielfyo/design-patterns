@@ -1,0 +1,25 @@
+name: Improvement or new content
+description: Suggest a clearer explanation, a better example, an exercise or a new language.
+title: "feat: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: What would you like to add or improve?
+    validations:
+      required: true
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Why does it help learners?
+    validations:
+      required: true
+  - type: checkboxes
+    id: equivalence
+    attributes:
+      label: Equivalence
+      options:
+        - label: I understand that every example must be implemented in all four languages (C#, TypeScript + React, Python and Go) and print the same output.
+          required: true

@@ -1,0 +1,56 @@
+name: Bug report
+description: Something in the code or the docs is wrong.
+title: "fix: "
+labels: [bug]
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options: [README / lesson, C# (.NET), TypeScript, React demo / playground, Python, Go, CI / tooling]
+    validations:
+      required: true
+  - type: dropdown
+    id: pattern
+    attributes:
+      label: Pattern
+      options:
+        - Not specific
+        - Factory Method
+        - Abstract Factory
+        - Builder
+        - Prototype
+        - Singleton
+        - Adapter
+        - Bridge
+        - Composite
+        - Decorator
+        - Facade
+        - Flyweight
+        - Proxy
+        - Chain of Responsibility
+        - Command
+        - Interpreter
+        - Iterator
+        - Mediator
+        - Memento
+        - Observer
+        - State
+        - Strategy
+        - Template Method
+        - Visitor
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: What is wrong?
+      description: Include file paths, the command you ran and its output if relevant.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+    validations:
+      required: true

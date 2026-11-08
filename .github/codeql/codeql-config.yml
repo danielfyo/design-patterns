@@ -1,0 +1,9 @@
+# Code scanning covers the examples, the tests, the tooling and the workflows.
+# Generated output and third-party code are excluded so that real findings stay visible.
+name: design-patterns CodeQL config
+paths-ignore:
+  - "**/node_modules/**"
+  - "dist/**"
+  - "coverage/**"
+  - "**/bin/**"
+  - "**/obj/**"

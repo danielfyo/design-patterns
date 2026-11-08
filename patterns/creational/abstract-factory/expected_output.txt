@@ -1,0 +1,14 @@
+=== Abstract Factory Pattern: UI theme kit ===
+Settings screen with LightTheme:
+  [x] Email alerts    (light checkbox: tick #2563eb)
+  [ ] Weekly digest   (light checkbox: tick #2563eb)
+  [ Save ]            (light button: bg #ffffff, text #111827)
+Settings screen with DarkTheme:
+  [x] Email alerts    (dark checkbox: tick #60a5fa)
+  [ ] Weekly digest   (dark checkbox: tick #60a5fa)
+  [ Save ]            (dark button: bg #1f2937, text #f9fafb)
+Picking the factory from a preference string:
+  preference=dark  -> DarkTheme  -> DarkCheckbox
+  preference=light -> LightTheme -> LightCheckbox
+Mixing families by hand (bypassing the factory):
+  error: cannot mix themes: LightButton is light, DarkCheckbox is dark

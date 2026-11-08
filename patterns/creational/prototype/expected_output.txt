@@ -1,0 +1,15 @@
+=== Prototype Pattern: Document templates ===
+Registered templates: invoice, report
+Clone "invoice" and fill it in:
+  Invoice #2026-001 | Georgia 11pt | sections=[Header, Line items, Totals, Notes] | metadata={client=ACME Corp, owner=billing, status=draft}
+The "invoice" prototype is untouched:
+  Invoice | Helvetica 10pt | sections=[Header, Line items, Totals] | metadata={owner=billing, status=template}
+Deep clone shares nothing with its source:
+  same sections: false, same metadata: false, same style: false
+Shallow copy (what NOT to do):
+  same sections: true, same metadata: true, same style: true
+  copy:     Draft | Comic Sans 12pt | sections=[Cover page, Findings, Next steps] | metadata={owner=analytics, status=edited}
+  original: Quarterly Report | Comic Sans 12pt | sections=[Cover page, Findings, Next steps] | metadata={owner=analytics, status=edited}
+  -> only the title stayed independent; every shared reference leaked
+Unknown template:
+  error: no template named "memo"

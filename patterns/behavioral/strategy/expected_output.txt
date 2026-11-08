@@ -1,0 +1,11 @@
+=== Strategy Pattern: Shipping cost calculator ===
+Order: subtotal=$80.00, weight=4.0kg
+  Standard         -> $11.00
+  Express          -> $27.00
+  Free over $100   -> $11.00
+  Store pickup     -> $0.00
+Order: subtotal=$150.00, weight=4.0kg
+  Standard         -> $11.00
+  Express          -> $27.00
+  Free over $100   -> $0.00
+  Store pickup     -> $0.00
