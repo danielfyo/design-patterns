@@ -14,7 +14,10 @@ ICartItem[] cart =
 // The traversal is always the same; each visitor is a different operation.
 void Visit(ICartVisitor visitor)
 {
-    foreach (var item in cart) item.Accept(visitor);
+    foreach (var item in cart)
+    {
+        item.Accept(visitor);
+    }
 }
 
 Console.WriteLine("--- ReceiptPrinter ---");

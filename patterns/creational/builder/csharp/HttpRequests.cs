@@ -38,9 +38,15 @@ public sealed class HttpRequest
     {
         var sb = new StringBuilder($"{Method} {Url}");
         if (!Query.IsEmpty)
+        {
             sb.Append('?').Append(string.Join("&", Query.Select(kv => $"{kv.Key}={kv.Value}")));
+        }
+
         foreach (var (name, value) in Headers)
+        {
             sb.Append($"\n  {name}: {value}");
+        }
+
         sb.Append($"\n  timeout: {TimeoutSeconds}s");
         sb.Append($"\n  body: {Body ?? "(none)"}");
         return sb.ToString();
@@ -72,11 +78,19 @@ public sealed class HttpRequestBuilder
     public HttpRequest Build()
     {
         if (string.IsNullOrEmpty(_url))
+        {
             throw new InvalidOperationException("url is required");
+        }
+
         if (_body is not null && _method is "GET" or "HEAD")
+        {
             throw new InvalidOperationException($"{_method} requests cannot have a body");
+        }
+
         if (_timeoutSeconds <= 0)
+        {
             throw new InvalidOperationException("timeout must be positive");
+        }
 
         return new HttpRequest(
             _method,

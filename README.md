@@ -202,8 +202,7 @@ Formatting is shared through [`.editorconfig`](.editorconfig) and line endings t
 │   ├── verify.sh                 ← runs and diffs every example in every language
 │   ├── check-python.sh           ← ruff + mypy --strict + pytest
 │   ├── sync_readme.py            ← regenerates the output blocks of the lessons
-│   ├── check_links.py            ← validates relative links and anchors
-│   └── setup-repo.{sh,ps1}       ← apply the GitHub settings (rulesets, security, Actions)
+│   └── check_links.py            ← validates relative links and anchors
 ├── .github/                      ← CI, CodeQL, Scorecard, releases, Dependabot, templates
 ├── DesignPatterns.sln            ← all C# projects in one solution
 ├── Directory.Build.props         ← shared C# settings (analyzers, code style, warnings as errors)

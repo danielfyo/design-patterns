@@ -120,7 +120,9 @@ public sealed class StateTests
         var before = order.State;
 
         foreach (var action in new[] { "pay", "ship", "deliver", "cancel" })
+        {
             Perform(order, action);
+        }
 
         Assert.Same(before, order.State);
         var errors = console.Output.Split('\n').Count(l => l.StartsWith("  ERROR:", StringComparison.Ordinal));

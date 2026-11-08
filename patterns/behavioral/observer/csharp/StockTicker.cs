@@ -34,7 +34,9 @@ public sealed class StockTicker
     {
         // Iterate over a copy so observers may unsubscribe while being notified.
         foreach (var observer in _observers.ToArray())
+        {
             observer.Update(symbol, price);
+        }
     }
 }
 
@@ -51,7 +53,9 @@ public sealed class PriceAlert(string watchedSymbol, decimal threshold) : IStock
     public void Update(string symbol, decimal price)
     {
         if (symbol == watchedSymbol && price > threshold)
+        {
             Console.WriteLine($"  [alert] {symbol} is above ${threshold:0.00}: now ${price:0.00}");
+        }
     }
 }
 
@@ -68,7 +72,11 @@ public sealed class PortfolioTracker(IReadOnlyDictionary<string, int> holdings) 
 
     public void Update(string symbol, decimal price)
     {
-        if (!holdings.ContainsKey(symbol)) return;
+        if (!holdings.ContainsKey(symbol))
+        {
+            return;
+        }
+
         _lastPrices[symbol] = price;
         Console.WriteLine($"  [portfolio] value: ${Value:0.00}");
     }

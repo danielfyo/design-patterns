@@ -100,8 +100,10 @@ public static class Layout
         foreach (var widget in widgets)
         {
             if (widget.Theme != first.Theme)
+            {
                 throw new InvalidOperationException(
                     $"cannot mix themes: {first.Name} is {first.Theme}, {widget.Name} is {widget.Theme}");
+            }
         }
         return widgets.Select(w => w.Render()).ToList();
     }

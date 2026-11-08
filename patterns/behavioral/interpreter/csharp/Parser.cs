@@ -33,7 +33,10 @@ public sealed class Parser
         var parser = new Parser(Tokenize(source));
         var expression = parser.ParseExpression();
         if (parser.Peek.Kind != TokenKind.End)
+        {
             throw new ExpressionException($"expected end of input but found {parser.Peek.Describe()}");
+        }
+
         return expression;
     }
 
@@ -48,12 +51,20 @@ public sealed class Parser
             var start = i;
             if (char.IsAsciiDigit(c) || c == '.')
             {
-                while (i < source.Length && (char.IsAsciiDigit(source[i]) || source[i] == '.')) i++;
+                while (i < source.Length && (char.IsAsciiDigit(source[i]) || source[i] == '.'))
+                {
+                    i++;
+                }
+
                 tokens.Add(new Token(TokenKind.Number, source[start..i], start));
             }
             else if (char.IsAsciiLetter(c) || c == '_')
             {
-                while (i < source.Length && (char.IsAsciiLetterOrDigit(source[i]) || source[i] == '_')) i++;
+                while (i < source.Length && (char.IsAsciiLetterOrDigit(source[i]) || source[i] == '_'))
+                {
+                    i++;
+                }
+
                 tokens.Add(new Token(TokenKind.Identifier, source[start..i], start));
             }
             else if ("+-*/()".Contains(c))
@@ -74,7 +85,11 @@ public sealed class Parser
 
     private bool Accept(string symbol)
     {
-        if (Peek.Kind != TokenKind.Symbol || Peek.Text != symbol) return false;
+        if (Peek.Kind != TokenKind.Symbol || Peek.Text != symbol)
+        {
+            return false;
+        }
+
         _index++;
         return true;
     }
@@ -85,9 +100,18 @@ public sealed class Parser
         var left = ParseTerm();
         while (true)
         {
-            if (Accept("+")) left = new Add(left, ParseTerm());
-            else if (Accept("-")) left = new Subtract(left, ParseTerm());
-            else return left;
+            if (Accept("+"))
+            {
+                left = new Add(left, ParseTerm());
+            }
+            else if (Accept("-"))
+            {
+                left = new Subtract(left, ParseTerm());
+            }
+            else
+            {
+                return left;
+            }
         }
     }
 
@@ -97,9 +121,18 @@ public sealed class Parser
         var left = ParseFactor();
         while (true)
         {
-            if (Accept("*")) left = new Multiply(left, ParseFactor());
-            else if (Accept("/")) left = new Divide(left, ParseFactor());
-            else return left;
+            if (Accept("*"))
+            {
+                left = new Multiply(left, ParseFactor());
+            }
+            else if (Accept("/"))
+            {
+                left = new Divide(left, ParseFactor());
+            }
+            else
+            {
+                return left;
+            }
         }
     }
 
@@ -112,7 +145,10 @@ public sealed class Parser
             case TokenKind.Number:
                 _index++;
                 if (!double.TryParse(token.Text, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var value))
+                {
                     throw new ExpressionException($"invalid number '{token.Text}' at position {token.Position}");
+                }
+
                 return new NumberLiteral(value);
             case TokenKind.Identifier:
                 _index++;
@@ -121,7 +157,11 @@ public sealed class Parser
         if (Accept("("))
         {
             var inner = ParseExpression();
-            if (!Accept(")")) throw new ExpressionException($"expected ')' but found {Peek.Describe()}");
+            if (!Accept(")"))
+            {
+                throw new ExpressionException($"expected ')' but found {Peek.Describe()}");
+            }
+
             return inner;
         }
         throw new ExpressionException($"expected a number, variable or '(' but found {token.Describe()}");

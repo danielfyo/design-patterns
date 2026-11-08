@@ -19,7 +19,11 @@ public sealed class OrderFacade(
         {
             if (!inventory.IsAvailable(item.Sku, item.Quantity))
             {
-                foreach (var r in reserved) inventory.Release(r.Sku, r.Quantity);
+                foreach (var r in reserved)
+                {
+                    inventory.Release(r.Sku, r.Quantity);
+                }
+
                 notification.SendEmail(customer.Email, $"Order failed: {item.Sku} is out of stock");
                 return new OrderResult(false, 0m, null,
                     $"{item.Sku} is out of stock (requested {item.Quantity}, available {inventory.StockOf(item.Sku)})");
