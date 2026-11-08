@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  verify:
+    name: Verify all examples (C#, TypeScript, Python, Go)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.23"
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Lint Go
+        run: |
+          test -z "$(gofmt -l patterns)" || (gofmt -l patterns && exit 1)
+          go vet ./...
+
+      - name: Type-check TypeScript and React demos
+        run: npm run typecheck
+
+      - name: Build the React playground
+        run: npm run build:playground
+
+      - name: Build C# examples
+        run: dotnet build DesignPatterns.sln
+
+      - name: Run every example and compare with expected_output.txt
+        run: scripts/verify.sh
