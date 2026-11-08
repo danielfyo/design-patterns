@@ -18,7 +18,7 @@
 
 - [ ] The title follows [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) (`type(scope): description`).
 - [ ] The change is mirrored in **all four languages** (C#, TypeScript + React, Python, Go), or it does not apply to code.
-- [ ] `expected_output.txt` is up to date and `scripts/verify.sh` passes for the affected patterns.
+- [ ] `expected_output.txt` is up to date and `bash scripts/verify.sh` passes for the affected patterns.
 - [ ] Tests were added or updated, and every affected toolchain passes its checks locally.
 - [ ] `python3 scripts/sync_readme.py` was run if an `expected_output.txt` changed.
 - [ ] Commits are signed.

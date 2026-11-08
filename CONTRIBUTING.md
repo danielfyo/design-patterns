@@ -15,7 +15,8 @@ typo fixes, clearer explanations, better exercises, new language ports or bug fi
 4. **Idiomatic code.** Write each language the way an experienced developer in that ecosystem
    would, and explain the idioms in the lesson's *Language notes* section.
 5. **No runtime dependencies** in the examples: standard libraries only (plus React for the demos).
-   Test and tooling dependencies are fine.
+   Test and tooling dependencies are fine. When you change a NuGet package, commit the updated
+   `packages.lock.json` files (`dotnet restore` regenerates them).
 6. **Deterministic.** No randomness, real clocks, real network calls or racy threads, in examples
    or tests.
 7. **The README output blocks are generated.** Never edit the block between
@@ -53,30 +54,33 @@ tests/csharp/DesignPatterns.Tests/<Category>/<PatternName>Tests.cs   # C# tests
 
 ## Running the checks
 
-Run the checks of every toolchain you touched before opening a pull request:
+Run the checks of every toolchain you touched before opening a pull request. `make all` runs all of
+them exactly as CI does (`make csharp`, `make python`, `make go`, `make typescript`, `make examples`
+and `make docs` run one area). Shell scripts are always invoked through `bash`, so they work even if
+the executable bit is lost (for example on Windows checkouts).
 
 ```bash
-# C# — analyzers (latest-recommended) and code style are enforced; warnings are errors
-dotnet build DesignPatterns.sln && dotnet test DesignPatterns.sln
+# C# — locked restore; analyzers (latest-recommended) and code style are enforced; warnings are errors
+dotnet restore DesignPatterns.sln --locked-mode && dotnet build DesignPatterns.sln --no-restore && dotnet test DesignPatterns.sln --no-build
 
 # Python — ruff (lint + format), mypy --strict, pytest
-scripts/check-python.sh
+bash scripts/check-python.sh
 
 # Go
 gofmt -l . && go vet ./... && go test -race ./...
 
 # TypeScript + React
-npm run typecheck && npm test && npm run build:playground
+npm audit --audit-level=moderate && npm run typecheck && npm test && npm run build:playground
 
 # Every example in every language prints its expected_output.txt
-scripts/verify.sh                       # or: scripts/verify.sh behavioral/observer
+bash scripts/verify.sh                  # or: bash scripts/verify.sh behavioral/observer
 
 # Docs
 python3 scripts/sync_readme.py --check  # output blocks in the lessons
 python3 scripts/check_links.py          # relative links and anchors
 ```
 
-Coverage: `dotnet test --collect:"XPlat Code Coverage"`, `scripts/check-python.sh --cov`,
+Coverage: `dotnet test --collect:"XPlat Code Coverage"`, `bash scripts/check-python.sh --cov`,
 `go test -cover ./...` and `npm run coverage`. CI publishes a coverage summary for every run.
 
 ## Commit messages and pull request titles

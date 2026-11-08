@@ -141,20 +141,40 @@ The playground discovers every `*Demo.tsx` component automatically and lists the
 ```bash
 dotnet test DesignPatterns.sln            # C#: xUnit (the build enforces analyzers and code style)
 npm test                                  # TypeScript + React: Vitest and Testing Library
-scripts/check-python.sh                   # Python: ruff, mypy --strict and pytest
+bash scripts/check-python.sh              # Python: ruff, mypy --strict and pytest
 go test ./...                             # Go
 ```
 
 ### Verify everything
 
 ```bash
-scripts/verify.sh                         # runs all 23 patterns × 4 languages and diffs the output
-scripts/verify.sh structural/decorator    # a single pattern
-LANGS="python go" scripts/verify.sh       # a subset of languages
+make all                                  # exactly what CI runs: docs, C#, Python, Go, TypeScript, examples
+make csharp                               # ...or one area: csharp | python | go | typescript | examples | docs
+bash scripts/verify.sh                    # runs all 23 patterns × 4 languages and diffs the output
+bash scripts/verify.sh structural/decorator  # a single pattern
+LANGS="python go" bash scripts/verify.sh  # a subset of languages
 npm run typecheck                         # type-check all TypeScript and React code
 python3 scripts/sync_readme.py --check    # lesson output blocks match expected_output.txt
 python3 scripts/check_links.py            # every relative link and anchor resolves
 ```
+
+### Quality gates
+
+The same checks run locally (`make all`) and in CI on every pull request:
+
+| Area | Checks |
+| --- | --- |
+| C# / .NET | NuGet lock files restored in locked mode, .NET analyzers `latest-recommended`, code style enforced in the build, warnings as errors, xUnit with coverage |
+| TypeScript + React | `npm audit`, strict TypeScript, Vitest + Testing Library with coverage, production build of the playground |
+| Python | Ruff (lint + format), mypy `--strict`, pytest with branch coverage, on Python 3.10 and 3.13 |
+| Go | `gofmt`, `go vet`, `go test -race` with coverage |
+| Examples | all 23 patterns × 4 languages print exactly their `expected_output.txt` |
+| Docs | lesson output blocks generated from `expected_output.txt`, every relative link and anchor resolves |
+| Security | CodeQL (C#, Python, Go, JS/TS and workflows), OpenSSF Scorecard, Dependabot, SHA-pinned actions, least-privilege tokens |
+
+Formatting is shared through [`.editorconfig`](.editorconfig) and line endings through
+[`.gitattributes`](.gitattributes). The full set of conventions is in
+[docs/CONVENTIONS.md](docs/CONVENTIONS.md).
 
 ---
 
@@ -175,13 +195,15 @@ python3 scripts/check_links.py            # every relative link and anchor resol
 │       └── go/                   ← main.go + main_test.go
 ├── tests/csharp/                 ← xUnit project with one test class per pattern
 ├── playground/                   ← Vite + React app that renders every *Demo.tsx
-├── docs/PATTERN_TEMPLATE.md      ← the structure every lesson follows
+├── docs/
+│   ├── CONVENTIONS.md            ← naming, layout, quality gates and commit conventions
+│   └── PATTERN_TEMPLATE.md       ← the structure every lesson follows
 ├── scripts/
 │   ├── verify.sh                 ← runs and diffs every example in every language
 │   ├── check-python.sh           ← ruff + mypy --strict + pytest
 │   ├── sync_readme.py            ← regenerates the output blocks of the lessons
 │   ├── check_links.py            ← validates relative links and anchors
-│   └── setup-repo.ps1            ← applies the GitHub settings (rulesets, security, Actions)
+│   └── setup-repo.{sh,ps1}       ← apply the GitHub settings (rulesets, security, Actions)
 ├── .github/                      ← CI, CodeQL, Scorecard, releases, Dependabot, templates
 ├── DesignPatterns.sln            ← all C# projects in one solution
 ├── Directory.Build.props         ← shared C# settings (analyzers, code style, warnings as errors)
@@ -189,6 +211,7 @@ python3 scripts/check_links.py            # every relative link and anchor resol
 ├── package.json / tsconfig.json  ← TypeScript, React and Vitest tooling
 ├── pyproject.toml / conftest.py  ← ruff, mypy, pytest and coverage settings
 ├── go.mod                        ← one Go module; each pattern is a `package main`
+├── Makefile                      ← `make all` runs every quality gate, like CI
 └── .editorconfig / .gitattributes← formatting and line endings for every editor and OS
 ```
 
@@ -660,7 +683,8 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) first: every example must stay eq
 four languages and print the same output, commits follow
 [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/), and CI must be green.
 Security issues: see [SECURITY.md](SECURITY.md). Everyone taking part follows the
-[Code of Conduct](CODE_OF_CONDUCT.md).
+[Code of Conduct](CODE_OF_CONDUCT.md). Release notes are in the [CHANGELOG](CHANGELOG.md), generated
+by release-please from Conventional Commits.
 
 ### How this repository is run
 

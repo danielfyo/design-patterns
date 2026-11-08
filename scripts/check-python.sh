@@ -3,7 +3,7 @@
 #   ruff (lint + format), mypy --strict (one run per pattern, because every pattern has its own
 #   main.py), pytest with branch coverage.
 #
-# Usage: scripts/check-python.sh [--cov]
+# Usage: bash scripts/check-python.sh [--cov]
 set -euo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")/.."
 

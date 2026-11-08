@@ -3,9 +3,9 @@
 # exactly the pattern's expected_output.txt.
 #
 # Usage:
-#   scripts/verify.sh                         # every pattern, every language
-#   scripts/verify.sh behavioral/strategy     # one pattern
-#   LANGS="python go" scripts/verify.sh       # subset of languages
+#   bash scripts/verify.sh                         # every pattern, every language
+#   bash scripts/verify.sh behavioral/strategy     # one pattern
+#   LANGS="python go" bash scripts/verify.sh       # subset of languages
 set -uo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
