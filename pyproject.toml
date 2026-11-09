@@ -12,7 +12,7 @@ requires-python = ">=3.10"
 license = { text = "MIT" }
 
 [project.optional-dependencies]
-dev = ["pytest>=9.2.0", "pytest-cov>=7.1.0", "mypy>=2.4.1", "ruff>=0.17.3"]
+dev = ["pytest>=9.2.0", "pytest-cov>=7.1.0", "mypy>=2.4.1", "ruff>=0.17.4"]
 
 # Nothing is packaged: installing the project only pulls in the dev tooling.
 [tool.setuptools]
